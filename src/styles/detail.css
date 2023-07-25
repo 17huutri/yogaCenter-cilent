@@ -1,0 +1,60 @@
+.mimi {
+  text-align: center;
+  font-weight: bolder;
+}
+
+.singlePage {
+  padding: 50px 0;
+  background: #fff;
+}
+
+.singlePage .right {
+  margin-top: 30px;
+}
+
+.singlePage img {
+  width: 700px;
+  height: 390px;
+  border-radius: 10px;
+  margin-left: 300px;
+  margin-top: 20px;
+}
+
+.singlePage h1 {
+  font-size: 30px;
+  font-weight: 500;
+  margin-left: 120px;
+}
+
+.singlePage p {
+  margin: 20px;
+  font-size: 18px;
+  line-height: 2;
+  text-transform: capitalize;
+  overflow-wrap: break-word;
+  word-wrap: inherit;
+  width: 1000px;
+  margin-left: 150px;
+  display: block;
+
+}
+
+.singlePage .buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.singlePage .button {
+  margin-left: 20px;
+  border: none;
+}
+
+.singlePage .button:nth-child(1) {
+  background: #10ac84;
+  padding: 15px 15px 15px 15px;
+}
+
+.singlePage .button:nth-child(2) {
+  background: #ee5253;
+  padding: 15px 15px 15px 15px;
+}

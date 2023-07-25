@@ -1,0 +1,111 @@
+.nav-item {
+    transition: color 0.3s;
+}
+
+.nav-item:hover {
+    color: orange;
+
+}
+
+.font-medium-1 {
+    color: white;
+    background-color: orange;
+    transition: color 0.3s;
+    padding: 10px;
+    border-radius: 7px;
+}
+
+.font-medium-1:hover {
+    color: red;
+
+}
+
+.flex-start {
+    color: rgb(255, 179, 48);
+}
+
+.bg-w {
+    background-color: rgb(255, 137, 11);
+}
+
+.bg-b {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid orange;
+}
+
+.bg-a {
+    background-color: orange;
+
+
+}
+
+.bg-c {
+    background-color: rgb(255, 132, 0);
+}
+
+.bg-d {
+    background-color: rgb(26, 22, 19);
+}
+
+.border-row {
+    background-color: rgb(238, 225, 153);
+    border: 2px solid rgb(230, 129, 129)
+}
+
+.princing {
+    background-color: whitesmoke;
+}
+
+.text-f {
+    font-size: 18px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.newletter {
+    background-color: rgba(29, 108, 99, 0.89);
+    padding-top: 100px;
+}
+
+.form-control {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.icon {
+    margin-left: 10px;
+}
+
+.img-course {
+    height: 300px;
+    width: 270px;
+}
+.back-to-top {
+
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    z-index: 99;
+}
+
+
+.back-to-top button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.back-to-top button .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    margin-right: 5px;
+}

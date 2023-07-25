@@ -1,0 +1,134 @@
+/* *{
+  margin:0;
+  padding:0;
+  text-decoration: none;
+} */
+.container_sidebar{
+  width: 2000vw;
+  height: 100vh;
+}
+
+.main.max-w-4x2{
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-left: 15rem;
+}
+
+
+/* main{
+  background-image: url('../assets/Background.png');
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-left: 0;
+  height: 100%;
+} */
+body {
+
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+.sidebar{
+  background: #000;
+  color: #fff;
+  height: 100vh;
+  width: 200px;
+  transition: all 0.5s;
+}
+.top_section{
+  display: flex;
+  align-items:center;
+  padding:20px 15px;
+}
+.logo{
+  font-size: 30px;
+}
+.bars{
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+.collapsed .centered {
+  width: 50px; /* Chiều rộng nút khi thu gọn */
+}
+.barsdp{
+  display: flex;
+  font-size: 24px;
+  margin-right: 13.5px;
+  transition: max-height 100s Ease-out curve;
+  margin-left: 15px;
+ 
+}
+
+.dropdown {
+  transition: max-height 100s Ease-out curve;
+}
+
+.icon {
+  margin-right: 22px;
+  margin-left: 20px;
+  display: flex;
+  font-size: 24px;
+}
+
+.link{
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover{
+  background:lightskyblue;
+  color: #000;
+  transition: all 0.5s;
+}
+.active{
+  background: lightskyblue;
+  color: #000;
+}
+.icon, .link_text{
+  font-size: 20px;
+}
+.profile-logout-container {
+  position: absolute;  
+  text-align: center;
+  bottom: 20px;
+ 
+}
+
+.profile-logout-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+
+}
+.dropdwon{
+  align-items: center;
+}
+.profile, .logout {
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .profile, .logout .home {
+    width: 100%;
+    text-align: center;
+  }
+}
+.profile{
+  margin-right: 15px;
+}
+.logout{
+  
+  color: red;
+}

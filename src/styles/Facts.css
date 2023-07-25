@@ -1,0 +1,29 @@
+.h21 {
+    font-size: 80px;
+    font-weight: 600;
+}
+
+.bg-pink-100 {
+    margin-top: 200px;
+    padding: 30px;
+
+}
+
+.h2 {
+    font-weight: 600;
+}
+
+.h22 {
+    font-size: 60px;
+}
+
+.modal-video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-video iframe {
+    width: 800px;
+    height: 450px;
+}

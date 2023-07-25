@@ -1,0 +1,135 @@
+.lg\:min-h-custom-height {
+    min-height: 815px;
+}
+
+.pt-9 {
+    padding-top: 9px;
+}
+
+.lg\:bg-circle {
+    background: url(../../../client/src/assets/img/hero/bg.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 2rem;
+    padding-left: 2rem;
+}
+
+.mx-auto {
+    /* margin-left: auto; */
+    margin-right: auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.lg\:flex-row {
+    flex-direction: row;
+}
+
+.lg\:items-start {
+    align-items: flex-start;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.lg\:mt-12 {
+    margin-top: 12px;
+}
+
+.h1 {
+    font-size: 65px;
+    line-height: 67px;
+    padding: 30px;
+    font-weight: bold;
+}
+
+.mb-3 {
+    margin-bottom: 3px;
+}
+
+.lg\:mb-22px {
+    margin-bottom: 22px;
+}
+
+
+
+
+.max-w-480px {
+    max-width: 480px;
+}
+
+.lg\:text-lg {
+    font-size: 17px;
+    line-height: 26px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.btn {
+    font-size: medium;
+    border-radius: 4px;
+    text-align: center;
+    padding: 8px 16px;
+    background-color: #f6ad55;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn:hover {
+    background-color: #ed8936;
+    color: #fff;
+}
+
+.btn-hover {
+    padding: 8px 16px;
+    border: 1px solid;
+    font-weight: bold;
+    border-width: 2px;
+    border-radius: 4px;
+    background-color: white;
+    color: orange;
+    transition: background-color 0.3s, color 0.3s
+}
+
+.btn-user {
+    border-radius: 19px;
+    padding: 8px 16px;
+    border: 1px solid;
+    font-weight: bold;
+    border-width: 2px;
+
+    background-color: white;
+    color: orange;
+    transition: background-color 0.3s, color 0.3s
+}
+
+.block-user {
+    font-size: medium;
+    border-radius: 4px;
+    text-align: center;
+    padding: 8px 16px;
+    background-color: #f7f7f7;
+    color: #292424;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.block-user:hover {
+    background-color: #fecf40;
+    color: #fff;
+}
