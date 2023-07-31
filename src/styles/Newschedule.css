@@ -1,0 +1,23 @@
+/* .bgcolor {
+    background: #b4c2d8;
+} */
+
+.txtcolor:hover{
+    color: yellow;
+    cursor: pointer;
+}
+.badgehover {
+    transition: 0.5s;
+    cursor: pointer;
+}
+.badgehover:hover{
+    background-color: hotpink !important ;
+    cursor: pointer;
+}
+.badgehover:hover{
+   
+    cursor: pointer;
+}
+.badgecolor{
+    background-color: #B983FF;
+}

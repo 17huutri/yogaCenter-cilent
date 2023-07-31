@@ -236,10 +236,16 @@ export async function confirmAccount({ username }) {
 }
 export async function getStudentInGrade(gradeId) {
     try {
-      const { data } = await placeholderApi.get(`/api/studentInGrade/${gradeId}`);
-      return Promise.resolve(data);
+        const { data } = await placeholderApi.get(`/api/studentInGrade/${gradeId}`);
+        return Promise.resolve(data);
     } catch (error) {
-      return Promise.reject('Could not Show');
+        return Promise.reject('Could not Show');
     }
-  }
-  
+}
+export async function kickStudent(id) {
+    try {
+        return await placeholderApi.post(`/api/kickStudent/${id}`);
+    } catch (error) {
+        return { error: error }
+    }
+}

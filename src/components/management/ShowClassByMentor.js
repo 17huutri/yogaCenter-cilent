@@ -17,7 +17,7 @@ export default function ShowClassByMentor() {
     const [{ apiData }] = useFetch();
     const mentorId = apiData?._id;
     const fetchData = async () => {
-        let query = {'username' : '','active' : 1}
+        let query = {'fullName' : '','active' : 1}
         const courses = await getAllCourses();
         const mentors = await getMentors(query)
         const grades = await getAllGrades();
@@ -62,9 +62,10 @@ export default function ShowClassByMentor() {
                         <tr className='text-left font-bold'>
 
                             <th className='px-6 pt-5 pb-4'>Mentor</th>
-                            <th className='px-6 pt-5 pb-4'>Number Of Student</th>
                             <th className='px-6 pt-5 pb-4'>Course</th>
-                            <th className='px-6 pt-5 pb-4'>Grade Name</th>
+                            <th className='px-6 pt-5 pb-4'>Class</th>
+                            <th className='px-6 pt-5 pb-4'>Room</th>
+                            <th className='px-6 pt-5 pb-4'>On</th>
                             <th className='px-6 pt-5 pb-4'>From</th>
                             <th className='px-6 pt-5 pb-4'>To</th>
 
@@ -78,11 +79,10 @@ export default function ShowClassByMentor() {
 
                                 <td className='px-6 py-4'>{mentors.map((mentor) => {
                                     if (grade.instructor == mentor._id)
-                                        return mentor.username
+                                        return mentor.fullName
 
                                     // data cua? booking
                                 })}</td>
-                                <td className='px-6 py-4'>{grade.nOfStudent}</td>
                                 <td className='px-6 py-4'>{courses.map((course) => {
                                     if (grade.course == course._id)
                                         return course.courseName
@@ -91,6 +91,8 @@ export default function ShowClassByMentor() {
                                 })}</td>
                                 <td className='px-6 py-4'><Link to={`/showStudent/${grade._id}`}>{grade.gradeName}</Link></td>
 
+                                <td className='px-6 py-4'>{grade.room}</td>
+                                <td className='px-6 py-4'>{grade.weekDay}</td>
                                 <td className='px-6 py-4'>{grade.startTimeGrade}</td>
                                 <td className='px-6 py-4'>{grade.endTimeGrade}</td>
 

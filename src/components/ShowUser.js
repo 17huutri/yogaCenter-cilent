@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { getAllUser, deleteUser, updateUser_1, ableUser, disableUser } from "../helper/helper";
+import { getAllGrades } from "../helper/gradeHelper";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Select from 'react-select'
 import { DataRole } from '../helper/dataRole.js'
+import avatar from '../assets/profile.png';
+import {
+
+  FaPortrait
+} from "react-icons/fa";
 export default function ShowUsers() {
   const [data, setData] = useState([]);
   const [updatedUserData, setUpdatedUserData] = useState({});
-
+  const [showCard, setShowCard] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
-  const [active,setActive] = useState('1');
-  const [searchName,setSearchName] = useState();
+  const [detail, setDetail] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [active, setActive] = useState('1');
+  const [searchName, setSearchName] = useState('');
   const navigate = useNavigate();
   // const handleChange = (event) => {
   //   // console.log(event);
@@ -32,18 +39,20 @@ export default function ShowUsers() {
   }
   const [filter, setFilter] = useState('');
 
-  const fetchData = async (searchName,active) => {
-    let query = { 'username': searchName || '', 'active': active || 0}
+  const fetchData = async (searchName, active) => {
+    let query = { 'fullName': searchName || '', 'active': active || 0 }
     setCurrentPage(1);
     console.log(query);
     const response = await getAllUser(query);
     setData(response.data);
+    const grade = await getAllGrades();
+    setClasses(grade.data);
   };
   const handleSelectFilter = async (event, meta) => {
-  
+
     setActive(event.value);
-    fetchData(searchName,event.value);
- 
+    fetchData(searchName, event.value);
+
   }
   const filterData = [
     {
@@ -68,6 +77,10 @@ export default function ShowUsers() {
       });
     });
   }
+  function showName(name) {
+    if (name == null || name == '') return 'Not yet'
+    else return name;
+  }
   useEffect(() => {
     // setFilter('ACTIVED')
     if (roleId < 3) {
@@ -76,18 +89,18 @@ export default function ShowUsers() {
       navigate("*");
     } else {
       let dataPromise = fetchData(filter);
-      toast.promise(dataPromise, {
-        loading: "Loading...",
-        success: <b>Successfully...!</b>,
-        error: <b>Failed !!!</b>,
-      });
-      dataPromise
-        .then(function () {
-          navigate("/showUser");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // toast.promise(dataPromise, {
+      //   loading: "Loading...",
+      //   success: <b>Successfully...!</b>,
+      //   error: <b>Failed !!!</b>,
+      // });
+      // dataPromise
+      //   .then(function () {
+      //     navigate("/showUser");
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
     }
   }, []);
   let optionsRole = DataRole.map(function (role) {
@@ -156,7 +169,10 @@ export default function ShowUsers() {
       console.error(error);
     }
   };
-
+  const handleShow = (user) => {
+    setDetail(user)
+    setShowCard(true);
+  }
   const handleEdit = (user) => {
     setUpdatedUserData(user);
     setShowModal(true);
@@ -203,83 +219,83 @@ export default function ShowUsers() {
   const [searchString, setSearchString] = useState('');
   async function handleSearch(event, meta) {
     setSearchName(event.target.value);
-    fetchData(event.target.value,active);
+    fetchData(event.target.value, active);
   }
 
   return (
     <div className="max-w-4x2" style={{ marginLeft: "15rem" }}>
       <Toaster position='top-center' reverseOrder={false}></Toaster>
-      <Select options={optionsFilter} name='active'
-        defaultValue={optionsFilter[0]}
-        placeholder="Active status" onChange={(event, meta) => handleSelectFilter(event, meta)} />
-      <div className="mt-6 my-10">
+      <div className="my-10 mt-6 flex items-center">
+        <Select
+          options={optionsFilter}
+          name="active"
+          defaultValue={optionsFilter[0]}
+          placeholder="Active status"
+          onChange={(event, meta) => handleSelectFilter(event, meta)}
+        />
         <input
           type="text"
-          placeholder="Search user"
+          placeholder="Search by name"
           onChange={(event, meta) => handleSearch(event, meta)}
-          className="border border-gray-300 px-4 py-2 rounded-md w-64"
-
+          className="ml-4 w-64 rounded-md border border-gray-300 px-4 py-2"
         />
-
       </div>
       <table className="mb-8 w-full overflow-hidden whitespace-nowrap rounded-lg bg-white shadow-sm">
         <thead>
           <tr className="text-left font-bold">
 
 
-            <th className="px-6 pb-4 pt-5">Username</th>
+            <th className="px-6 pb-4 pt-5">Name</th>
             <th className="px-6 pb-4 pt-5">Email</th>
-            <th className="px-6 pb-4 pt-5">Address</th>
-            <th className="px-6 pb-4 pt-5">Phone</th>
-            <th className="px-6 pb-4 pt-5">Role</th>
+
+            <th className="px-6 pb-4 pt-5">Detail</th>
             <th className="px-6 pb-4 pt-5">Active</th>
             <th className="px-6 pb-4 pt-5">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {currentdata.map((user) => user.username.toLowerCase().includes(searchString.toLowerCase()) &&
-            (
-              <tr key={user._id}>
+          {currentdata.map((user) =>
+          (
+            <tr key={user._id}>
 
+              {/* <td className="px-6 py-4">{(user.fullName)}</td> */}
+              <td className="px-6 py-4">{showName(user.fullName)}</td>
+              <td className="px-6 py-4">{user.email}</td>
 
-                <td className="px-6 py-4">{user.username}</td>
-                <td className="px-6 py-4">{user.email}</td>
-                <td className="px-6 py-4">{valuesContext(user.address)}</td>
-                <td className="px-6 py-4">{valuesContext(user.phone)}</td>
-                <td className="px-6 py-4">{showRoleName(user.roleId)}</td>
-                <td className="px-6 py-4">
-                  {showActive(user.isActive)}  </td>
-                <td className="px-6 py-4">
-                  {user.roleId <= 3 && (
-                    <>
+              <td className="px-6 py-4"><button onClick={() => handleShow(user)} className="mr-2 rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-slate-700"><FaPortrait></FaPortrait></button></td>
+              <td className="px-6 py-4">
+                {showActive(user.isActive)}  </td>
+              <td className="px-6 py-4">
+                {user.roleId <= 3 && (
+                  <>
+                    <button
+                      className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                      onClick={() => handleEdit(user)}
+                    >
+                      Edit
+                    </button>
+                    {user.isActive == 1 && (
                       <button
-                        className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                        onClick={() => handleEdit(user)}
+                        className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+                        onClick={() => handleUnactive(user._id)}
                       >
-                        Edit
+                        Unactive
                       </button>
-                      {user.isActive == 1 && (
-                        <button
-                          className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-                          onClick={() => handleUnactive(user._id)}
-                        >
-                          Unactive
-                        </button>
-                      )}
-                      {user.isActive == 0 && (
-                        <button
-                          className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
-                          onClick={() => handleActive(user._id)}
-                        >
-                          Active
-                        </button>
-                      )}
+                    )}
+                    {user.isActive == 0 && (
+                      <button
+                        className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+                        onClick={() => handleActive(user._id)}
+                      >
+                        Active
+                      </button>
+                    )}
 
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       {showModal ? (
@@ -347,15 +363,89 @@ export default function ShowUsers() {
           <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
         </>
       ) : null}
+      {showCard ? (
+        <>
+          <div className="fixed inset-1  z-50 items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
+            <div className="relative mx-auto my-6 w-auto max-w-3xl">
+              {/*content*/}
+
+              {/*header*/}
+              <div className="flex items-start justify-between rounded-t border-b border-solid border-slate-200 p-5">
+
+                <button
+                  className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
+                  onClick={() => setShowModal(false)}
+                >
+                  <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-5 outline-none focus:outline-none">
+                    ×
+                  </span>
+                </button>
+              </div>
+              {/*body*/}
+              <div>
+
+                <div className=" bg-gradient-to-r from-purple-500 to-green-400 rounded-lg mb-5">
+                  <div className="grid grid-cols-3">
+                    <div className="col-span-1"></div>
+                    <img className="rounded-full w-4/5 col-span-1 ml-8 mt-16" src={detail.profile || avatar} alt='profile' />
+                    <div className="col-span-1"></div>
+                  </div>
+                  <div className="grid grid-cols-2 ml-20 mt-14">
+                    <div className="col-span-1 ml-10 mb-8">
+                      <p><b>Username:</b> {detail.username}</p>
+                      <p><b>Name:</b> {detail.fullName}</p>
+
+                      <p><b>Email:</b> {detail.email}</p>
+                      <p><b>Phone: </b>{detail.phone}</p>
+                      <p><b>Address: </b>{detail.address}</p>
+                      <p><b>Status: </b>{detail.isActive ? 'Active' : 'Unactive'}</p>
+                    </div>
+                    <div className="col-span-1 mb-8">
+
+                     
+                      <p><b>Role: </b>{showRoleName(detail.roleId)}</p>
+                      <p><b>Description: </b>{detail.description}</p>
+                    </div>
+                  </div>
+
+
+
+
+
+
+                  <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
+                    <button
+                      className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 hover:text-yellow-400 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                      type="button"
+                      onClick={() => setShowCard(false)}
+                    >
+                      Close
+                    </button>
+
+                  </div>
+                </div>
+                {/* <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Update
+                                    </button> */}
+              </div>
+              {/*footer*/}
+
+            </div>
+          </div>
+          <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
+        </>
+      ) : null}
       <Pagination
         userPerPage={userPerPage}
         totalUser={data.length}
         currentdata={currentPage}
         paginate={paginate}
       />
+
     </div>
   );
 }
+
 
 // Component phân trang
 const Pagination = ({ userPerPage, totalUser, currentdata, paginate }) => {
@@ -385,3 +475,4 @@ const Pagination = ({ userPerPage, totalUser, currentdata, paginate }) => {
     </div>
   );
 };
+

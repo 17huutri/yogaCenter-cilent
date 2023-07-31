@@ -14,8 +14,8 @@ export const navigation = [
     href: '/gradeBooking',
   },
   {
-    name: 'Features',
-    href: '/',
+    name: 'Schedule',
+    href: '/schedule',
   },
   {
     name: 'Contact',
@@ -26,6 +26,7 @@ export const navigation = [
     name: 'Blog',
     href: '/homeblog',
   },
+
 ];
 
 

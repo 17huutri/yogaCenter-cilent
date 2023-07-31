@@ -34,8 +34,8 @@
     position: absolute;
     top: -70px;
     left: -80px;
-    width: 370px;
-    height: 300px;
+    width: 70px;
+    height: 70px;
 }
 
 .header .nav {
@@ -88,5 +88,31 @@
 
 .btn-si:hover {
     color: orange;
+
+
+}
+
+.full-width-button {
+    width: 100%;
+}
+
+.full-width-button:hover {
+    width: 100%;
+}
+
+button.block-user {
+    width: auto;
+}
+
+button.block-user:hover {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn.block-user {
+    position: fixed;
 
 }

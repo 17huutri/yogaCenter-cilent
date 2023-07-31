@@ -58,26 +58,26 @@ const Sidebar = ({ children }) => {
       icon: <FaHospitalUser />,
       visible: isAdmin,
     },
-
-    {
-      path: "/showCustomers",
-      name: "Customer",
-      icon: <FaPeopleLine />,
-      visible: !isMentor && !isUser,
-    },
     {
       path: "/showMentors",
       name: "Mentor",
       icon: <FaElementor />,
       visible: isAdmin || isStaff,
     },
-
     {
-      path: "/profile",
-      name: "Profile",
-      icon: <FaUserEdit />,
-      visible: isUser
+      path: "/showCustomers",
+      name: "Customer",
+      icon: <FaPeopleLine />,
+      visible: !isMentor && !isUser,
     },
+
+
+    // {
+    //   path: "/profile",
+    //   name: "Profile",
+    //   icon: <FaUserEdit />,
+    //   visible: isUser
+    // },
 
   ];
   const menuItemContents = [
@@ -98,31 +98,37 @@ const Sidebar = ({ children }) => {
       path: "/Course",
       name: "Course",
       icon: <FaBookOpen />,
-      visible: isAdmin,
+      visible: isAdmin || isStaff,
     },
     {
       path: "/grade",
       name: "Classes",
       icon: <FaBookReader />,
-      visible:   isAdmin || isStaff,
+      visible: isAdmin || isStaff,
     },
     {
-      path: "/schedule",
-      name: "Schedule",
+      path: "/scheduleMentor",
+      name: "My Schedule",
       icon: <AiFillSchedule />,
-      visible: isAdmin || isStaff || isUser || isMentor
+      visible: isMentor
     },
     {
-      path: "/bookingForCustomer",
-      name: "My Booking",
+      path: "/scheduleStudent",
+      name: "My Class",
       icon: <AiFillSchedule />,
-      visible: isUser 
+      visible: isUser
     },
+    // {
+    //   path: "/bookingForCustomer",
+    //   name: "My Booking",
+    //   icon: <AiFillSchedule />,
+    //   visible: isUser 
+    // },
     {
       path: "/showClassByMentor",
       name: "My Class",
       icon: <AiFillSchedule />,
-      visible: isMentor 
+      visible: isMentor
     },
   ];
   // const menuItemBooking = [
@@ -235,7 +241,7 @@ const Sidebar = ({ children }) => {
 
 
           </div>
-          {!isUser && (
+          {(
             <div className="profile">
               <NavLink to="/profile" className="user-info">
                 <FaUserEdit />

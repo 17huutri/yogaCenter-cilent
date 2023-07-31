@@ -56,3 +56,11 @@ export async function getGradesOfMentor(id){
         return Promise.reject({ error: 'Could not SHow' });
     }
 }
+export async function getGradeById(id){
+    try {
+        const {data}  = await placeholderApi.get(`/grade/getGradeById/${id}`);
+        return {data};
+    } catch (error) {
+        return Promise.reject({ error: 'Could not SHow' });
+    }
+}

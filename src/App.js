@@ -1,7 +1,7 @@
 
 import React from "react";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Sidebar  from "./components/SidebarAdmin.jsx";
+import Sidebar from "./components/SidebarAdmin.jsx";
 
 // components
 import ConfirmAccount from "./components/ConfirmAccount"
@@ -26,7 +26,7 @@ import Booking from './components/Booking.js';
 import Blog from './components/Blog.js';
 
 import Course from './components/Course.js';
-import { AuthorizeUser} from './middleware/auth';
+import { AuthorizeUser } from './middleware/auth';
 import BlogNew from "./components/blog/BlogNew";
 import { DetailBlog } from "./components/blog/DetailBlog";
 import Homepage from "./components/Homepage";
@@ -35,6 +35,9 @@ import BookingForCustomer from "./components/bookingForCustomer.js";
 import ShowStudent from "./components/showStudent.js";
 import ShowClassByMentor from "./components/management/ShowClassByMentor.js";
 // import Header from "./components/homepage/Header.js";
+import Schedule from './components/Schedule.js'
+import ScheduleStudent from './components/ScheduleForStudent.js'
+import ScheduleMentor from './components/ScheduleForMentor.js'
 // import Testing from "./components/Testing.js";
 const router = createBrowserRouter([
 
@@ -43,37 +46,49 @@ const router = createBrowserRouter([
         element: <Homepage></Homepage>
     },
     {
+        path: '/schedule',
+        element: <Schedule></Schedule>
+    },
+    {
+        path: '/scheduleStudent',
+        element: <Sidebar><ScheduleStudent></ScheduleStudent></Sidebar>
+    },
+    {
+        path: '/scheduleMentor',
+        element: <Sidebar><ScheduleMentor></ScheduleMentor></Sidebar>
+    },
+    {
         path: '/showClassByMentor',
         element: <Sidebar><ShowClassByMentor></ShowClassByMentor></Sidebar>
     },
     {
         path: '/showStudent/:gradeId',
-        element:<ShowStudent></ShowStudent>
+        element: <ShowStudent></ShowStudent>
     },
     {
         path: '/login',
         element: <Login></Login>
     },
-   
+
     {
         path: '/bookingForCustomer',
-        element: <Sidebar><BookingForCustomer></BookingForCustomer></Sidebar>
+        element: <BookingForCustomer></BookingForCustomer>
     },
     {
         path: '/showCustomers',
-        element:<Sidebar> <ShowCustomer></ShowCustomer></Sidebar>
+        element: <Sidebar> <ShowCustomer></ShowCustomer></Sidebar>
     },
     {
         path: '/showMentors',
-        element:<Sidebar> <ShowMentor></ShowMentor></Sidebar>
+        element: <Sidebar> <ShowMentor></ShowMentor></Sidebar>
     },
     {
         path: '/showStaffs',
-        element:<Sidebar> <ShowStaff></ShowStaff></Sidebar>
+        element: <Sidebar> <ShowStaff></ShowStaff></Sidebar>
     },
     {
         path: '/showAdmins',
-        element:<Sidebar> <ShowAdmin></ShowAdmin></Sidebar>
+        element: <Sidebar> <ShowAdmin></ShowAdmin></Sidebar>
     },
 
     {
@@ -111,20 +126,20 @@ const router = createBrowserRouter([
     },
     {
         path: '/booking',
-        element:<Sidebar> <Booking></Booking></Sidebar>
+        element: <Sidebar> <Booking></Booking></Sidebar>
     },
- 
+
     {
         path: '/course',
-        element:<Sidebar> <Course></Course></Sidebar>
+        element: <Sidebar> <Course></Course></Sidebar>
     },
     {
         path: '/grade',
-        element:<Sidebar> <Grade></Grade></Sidebar>
+        element: <Sidebar> <Grade></Grade></Sidebar>
     },
     {
         path: '/blog',
-        element:<Sidebar> <Blog></Blog></Sidebar>
+        element: <Sidebar> <Blog></Blog></Sidebar>
     },
     {
         path: '/gradeBooking',

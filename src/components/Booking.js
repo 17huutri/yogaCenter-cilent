@@ -36,8 +36,8 @@ export default function Booking() {
     let roleId = localStorage.getItem('roleId');
     let token = localStorage.getItem('token');
     const fetchData = async (status) => {
-        let query = { 'isAccepted': status }
-        let query_1 = { 'active': 1, 'username': '' };
+        let query = { 'isAccepted': status}
+        let query_1 = {'active' : 1,'fullName' : ''};
         const grades = await getAllGrades()
         const customers = await getCustomers(query_1)
         const response = await getBookings(query);
@@ -55,14 +55,14 @@ export default function Booking() {
             navigate('*');
         } else {
             let dataPromise = fetchData(status);
-            toast.promise(dataPromise, {
-                loading: 'Loading...',
-                success: <b>Successfully...!</b>,
-                error: <b>Failed !!!</b>
-            })
-            dataPromise.then(function () { navigate('/booking') }).catch(error => {
-                console.error(error);
-            });
+            // toast.promise(dataPromise, {
+            //     loading: 'Loading...',
+            //     success: <b>Successfully...!</b>,
+            //     error: <b>Failed !!!</b>
+            // })
+            // dataPromise.then(function () { navigate('/booking') }).catch(error => {
+            //     console.error(error);
+            // });
         }
 
     }, []);
@@ -82,7 +82,7 @@ export default function Booking() {
                 console.error(error);
             });
         } catch (error) {
-            console.error(error)
+            toast.error('Failed');
         }
     }
     function showStatus(status) {
@@ -107,21 +107,22 @@ export default function Booking() {
 
 
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
     const createModal = () => {
         setShowModal(true);
     }
-    const [nowStatus, setNowStatus] = useState();
+    const [nowStatus,setNowStatus] = useState();
     const handleUpdate = async (event, id) => {
-        event.currentTarget.disabled = true;
+        // event.currentTarget.disabled = true;
         // event.preventDefault()
         try {
             const response = await updateBooking(id); // Call your update function to update the user data
+            console.log(response)
+            
             setShowModal(false);
-            setNowStatus(0)
-            let dataPromise = fetchData(nowStatus);
+            let dataPromise = fetchData(0);
             toast.promise(dataPromise, {
                 loading: 'Loading...',
                 success: <b>Successfully...!</b>,
@@ -131,7 +132,8 @@ export default function Booking() {
                 console.error(error);
             });
         } catch (error) {
-            console.error(error);
+            toast.error('Something wrong, the class already been full or the user has been in class');
+            console.log(error)
         }
     }
     function redirectAllBooking() {
@@ -153,7 +155,7 @@ export default function Booking() {
             const response = await rejectBooking(id); // Call your update function to update the user data
             setShowModal(false);
             setNowStatus(-1)
-            let dataPromise = fetchData(nowStatus);
+            let dataPromise = fetchData(0);
             toast.promise(dataPromise, {
                 loading: 'Loading...',
                 success: <b>Successfully...!</b>,
@@ -163,8 +165,12 @@ export default function Booking() {
                 console.error(error);
             });
         } catch (error) {
-            console.error(error);
+            console.log(error)
         }
+    }
+    function showPayment(payment){
+        if(!payment) return 'Cash'
+        else return 'PayPal'
     }
     // Tính toán các chỉ số cho phân trang
     const [currentPage, setCurrentPage] = useState(1);
@@ -177,9 +183,9 @@ export default function Booking() {
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
-    const [status, setStatus] = useState(0)
+    const [status,setStatus] = useState(0)
     const handleSelectFilter = async (event, meta) => {
-
+        
         fetchData(event.value)
     }
     const filterData = [
@@ -196,21 +202,28 @@ export default function Booking() {
     let optionsFilter = filterData.map(function (choose) {
         return { value: choose.isAccepted, label: choose.name };
     })
+    function convertDate(day){
+        const date = new Date(day);
+        var options = {hour : "numeric",minute : "numeric"};
+        return date.toLocaleDateString('vi-VN',options);
+    }
     return (
 
 
         <div className='max-w-4x2' style={{ marginLeft: '15rem' }}>
             <Toaster position='top-center' reverseOrder={false}></Toaster>
+            <div className='my-10 mt-6 flex items-center'>
             <Select options={optionsFilter} name='isAccepted'
                 defaultValue={optionsFilter[1]}
                 placeholder="Status" onChange={(event, meta) => handleSelectFilter(event, meta)} />
-
+           </div>
             <div class="">
                 <table className='w-full whitespace-nowrap bg-white overflow-hidden rounded-lg shadow-sm mb-8'>
                     <thead>
                         <tr className='text-left font-bold'>
-                            <th className='px-6 pt-5 pb-4'>Grade name</th>
-                            <th className='px-6 pt-5 pb-4'>Username</th>
+                            <th className='px-6 pt-5 pb-4'>Class</th>
+                            <th className='px-6 pt-5 pb-4'>Name</th>
+                            <th className='px-6 pt-5 pb-4'>Payment</th>
                             <th className='px-6 pt-5 pb-4'>Created At</th>
                             <th className='px-6 pt-5 pb-4'>Status</th>
                             <th className='px-6 pt-5 pb-4'>Action</th>
@@ -235,11 +248,12 @@ export default function Booking() {
                                     //   if(data._id == user._id)  [user.username]
                                     // }
                                     if (data.user == customer._id)
-                                        return customer.username
+                                        return customer.fullName
 
                                     // data cua? booking
                                 })}</td>
-                                <td className='px-6 py-4'>{data.createdAt}</td>
+                                <td className='px-6 py-4'>{showPayment(data.payment)}</td>
+                                <td className='px-6 py-4'>{convertDate(data.createdAt)}</td>
                                 <td className='px-6 py-4'>{showStatus(data.isAccepted)}</td>
                                 <td className='px-6 py-4'>
                                     {data.isAccepted == 0 &&
@@ -257,7 +271,7 @@ export default function Booking() {
                                     >
                                         Reject
                                     </button>}
-                                    {data.isAccepted == 1 &&
+                                    {data.isAccepted == 1 && roleId == 4 &&
                                         <button
                                             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
                                             onClick={(event) => handleDelete(event, data._id)}
@@ -265,7 +279,7 @@ export default function Booking() {
                                             Delete
                                         </button>
                                     }
-                                    {data.isAccepted == -1 &&
+                                    {data.isAccepted == -1 && roleId == 4 &&
                                         <button
                                             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
                                             onClick={(event) => handleDelete(event, data._id)}

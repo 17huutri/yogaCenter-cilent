@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { getCustomers, deleteUser, updateUser_1, disableUser, ableUser } from "../helper/helper";
 import { getAllGrades } from "../helper/gradeHelper";
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import avatar from '../assets/profile.png';
+import {
+
+  FaPortrait
+} from "react-icons/fa";
+
 import '../styles/showStyle.css'
 import Select from 'react-select'
 import { DataRole, DataRoleForStaff } from '../helper/dataRole.js'
 export default function ShowCustomers() {
   const [data, setData] = useState([]);
   const [updatedUserData, setUpdatedUserData] = useState({});
-
+  const [showCard, setShowCard] = useState(false);
+  const [detail, setDetail] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [grades, setGrades] = useState([]);
   const navigate = useNavigate();
+
   const handleChange = (event) => {
     setUpdatedUserData({
       ...updatedUserData,
@@ -27,9 +35,9 @@ export default function ShowCustomers() {
     fetchData(searchName, event.value);
 
   }
-  const fetchData = async (searchName,active) => {
+  const fetchData = async (searchName, active) => {
 
-    let query = { 'username': searchName || '', 'active': active || 0 }
+    let query = { 'fullName': searchName || '', 'active': active || 0 }
     setCurrentPage(1);
     console.log(query);
     const response = await getCustomers(query);
@@ -59,14 +67,14 @@ export default function ShowCustomers() {
       navigate('*');
     } else {
       let dataPromise = fetchData(filter);
-      toast.promise(dataPromise, {
-        loading: 'Loading...',
-        success: <b>Successfully...!</b>,
-        error: <b>Failed !!!</b>
-      })
-      dataPromise.then(function () { navigate('/showCustomers') }).catch(error => {
-        console.log(error);
-      });
+      // toast.promise(dataPromise, {
+      //   loading: 'Loading...',
+      //   success: <b>Successfully...!</b>,
+      //   error: <b>Failed !!!</b>
+      // })
+      // dataPromise.then(function () { navigate('/showCustomers') }).catch(error => {
+      //   console.log(error);
+      // });
     }
 
   }, []);
@@ -132,6 +140,10 @@ export default function ShowCustomers() {
     setUpdatedUserData(user);
     setShowModal(true);
   };
+  const handleShow = (user) => {
+    setDetail(user)
+    setShowCard(true);
+  }
   function showRoleName(roleId) {
     if (roleId == 1) return 'CUSTOMER'
     else if (roleId == 2) return 'MENTOR'
@@ -186,7 +198,7 @@ export default function ShowCustomers() {
     if (value == null || value == '') return 'Not yet'
     else return value;
   }
-  
+
   const [searchString, setSearchString] = useState('');
   async function handleSearch(event, meta) {
     setSearchName(event.target.value);
@@ -194,42 +206,45 @@ export default function ShowCustomers() {
   }
   return (<div className='max-w-4x2' style={{ marginLeft: '16rem' }}>
 
-    <div className="container show mx-10 px-5 py-10">
+    <div className="">
       <Toaster position='top-center' reverseOrder={false}></Toaster>
-      <Select options={optionsFilter} name='active'
-        defaultValue={optionsFilter[0]}
-        placeholder="Active status" onChange={(event, meta) => handleSelectFilter(event, meta)} />
-      <div className="mt-6 my-10">
+      <div className="my-10 mt-6 flex items-center">
+        <Select
+          options={optionsFilter}
+          name="active"
+          defaultValue={optionsFilter[0]}
+          placeholder="Active status"
+          onChange={(event, meta) => handleSelectFilter(event, meta)}
+        />
         <input
           type="text"
-          placeholder="Search user"
+          placeholder="Search by name"
           onChange={(event, meta) => handleSearch(event, meta)}
-          className="border border-gray-300 px-4 py-2 rounded-md w-64"
-
+          className="ml-4 w-64 rounded-md border border-gray-300 px-4 py-2"
         />
-
       </div>
+
 
       <table className="mb-8 w-full overflow-hidden whitespace-nowrap rounded-lg bg-white shadow-sm">
         <thead>
           <tr className="text-left font-bold">
-            <th className="px-6 pb-4 pt-5">Username</th>
+            <th className="px-6 pb-4 pt-5">Name</th>
             <th className="px-6 pb-4 pt-5">Email</th>
-            <th className="px-6 pb-4 pt-5">Address</th>
-            <th className="px-6 pb-4 pt-5">Phone</th>
-            <th className="px-6 pb-4 pt-5">Grade</th>
-            <th className="px-6 pb-4 pt-5">Role</th>
+
+            <th className="px-6 pb-4 pt-5">Class</th>
+
+            <th className="px-6 pb-4 pt-5">Detail</th>
             <th className="px-6 pb-4 pt-5">Active</th>
             <th className="px-6 pb-4 pt-5">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {currentdata.map((user) => user.username.toLowerCase().includes(searchString.toLowerCase()) && (
+          {currentdata.map((user) => (
             <tr key={user._id}>
-              <td className="px-6 py-4">{user.username}</td>
+              <td className="px-6 py-4">{user.fullName}</td>
               <td className="px-6 py-4">{user.email}</td>
-              <td className="px-6 py-4">{valuesContext(user.address)}</td>
-              <td className="px-6 py-4">{valuesContext(user.phone)}</td>
+              {/* <td className="px-6 py-4">{valuesContext(user.address)}</td> */}
+              {/* <td className="px-6 py-4">{valuesContext(user.phone)}</td> */}
               <td className="px-6 py-4">
                 {user.grade && grades.map((grade) => {
 
@@ -241,8 +256,8 @@ export default function ShowCustomers() {
                   <p>Not yet</p>
                 )}
               </td>
-              <td className="px-6 py-4">{
-                showRoleName(user.roleId)}  </td>
+
+              <td className="px-6 py-4"><button onClick={() => handleShow(user)} className="mr-2 rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-slate-700"><FaPortrait></FaPortrait></button></td>
               <td className="px-6 py-4">
                 {showActive(user.isActive)}  </td>
               <td className="px-6 py-4">
@@ -254,7 +269,7 @@ export default function ShowCustomers() {
                   >
                     Edit
                   </button>
-                  {user.isActive == 1 && (
+                  {user.isActive == 1 && roleId == 4 && (
                     <button
                       className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
                       onClick={() => handleUnactive(user._id)}
@@ -262,7 +277,7 @@ export default function ShowCustomers() {
                       Unactive
                     </button>
                   )}
-                  {user.isActive == 0 && (
+                  {user.isActive == 0 && roleId == 4 && (
                     <button
                       className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
                       onClick={() => handleActive(user._id)}
@@ -311,9 +326,11 @@ export default function ShowCustomers() {
                   </div> */}
 
                   <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Role Name :</label>
+                    <label className="block text-gray-700 font-bold mb-2 ml-6">Role Name :</label>
                     {roleId == 4 && (
-                      <Select options={optionsRoleForAdmin} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} />
+                      <Select options={optionsRoleForAdmin} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)}
+                        className="w-40 rounded ml-6"
+                      />
                     )
                     }
                     {roleId == 3 && (
@@ -323,8 +340,6 @@ export default function ShowCustomers() {
 
 
                   </div>
-
-
                   <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
                     <button
                       className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
@@ -346,6 +361,87 @@ export default function ShowCustomers() {
                 </form>
                 {/*footer*/}
               </div>
+            </div>
+          </div>
+          <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
+        </>
+      ) : null}
+      {showCard ? (
+        <>
+          <div className="fixed inset-1  z-50 items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
+            <div className="relative mx-auto my-6 w-auto max-w-3xl">
+              {/*content*/}
+
+              {/*header*/}
+              <div className="flex items-start justify-between rounded-t border-b border-solid border-slate-400 p-5">
+
+                <button
+                  className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
+                  onClick={() => setShowModal(false)}
+                >
+                  <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-5 outline-none focus:outline-none">
+                    ×
+                  </span>
+                </button>
+              </div>
+              {/*body*/}
+              <div>
+
+                <div className=" bg-gradient-to-r from-purple-500 to-green-400 rounded-md">
+                  <div className="grid grid-cols-3">
+                    <div className="col-span-1"></div>
+                    <img className="rounded-full w-4/5 col-span-1 ml-8 mt-16" src={detail.profile || avatar} alt='profile' />
+                    <div className="col-span-1"></div>
+                  </div>
+                  <div className="grid grid-cols-2 ml-20 mt-14">
+                    <div className="col-span-1 ml-10 mb-8">
+                      <p><b>Name:</b> {detail.fullName}</p>
+
+                      <p><b>Email:</b> {detail.email}</p>
+                      <p><b>Phone: </b>{detail.phone}</p>
+                      <p><b>Address: </b>{detail.address}</p>
+                      <p><b>Status: </b>{detail.isActive ? 'Active' : 'Unactive'}</p>
+                    </div>
+                    <div className="col-span-1 mb-8">
+                      <p><b>Class: </b>{detail.grade && grades.map((grade) => {
+
+                        if (detail.grade == grade._id) return valuesContext(grade.gradeName);
+                      })
+
+                      }
+                        {!detail.grade && (
+                          "Not yet"
+                        )}</p>
+                      <p><b>Ex-Class: </b>{detail.ex_grade}</p>
+                      <p><b>Status: </b>{detail.isActive ? 'Active' : 'Unactive'}</p>
+                      <p><b>Role: </b>{detail.roleId == 1 ? 'Customer' : ''}</p>
+
+                      <p><b>Description: </b>{detail.description}</p>
+                    </div>
+                  </div>
+
+
+
+
+
+
+                  <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
+                    <button
+                      className="background-transparent  mr-1 px-6 text-sm font-bold uppercase text-red-500 outline-none hover:text-amber-500 transition-all duration-150 ease-linear focus:outline-none"
+                      type="button"
+                      onClick={() => setShowCard(false)}
+                    >
+                      Close
+                    </button>
+
+                  </div>
+                </div>
+                {/* <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Update
+                                    </button> */}
+              </div>
+              {/*footer*/}
+
             </div>
           </div>
           <div className="fixed inset-0 z-40 bg-black opacity-25"></div>

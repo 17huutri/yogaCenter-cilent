@@ -42,7 +42,14 @@ export async function createCourse(data){
 
 export async function detailCourse(courseName){
     try {      
-        return await placeholderApi.post(`/course/detailCourse/${courseName}`);
+        return await placeholderApi.get(`/course/detailCourse/${courseName}`);
+    } catch (error) {
+        return Promise.reject({ error: 'Could not get details' });
+    }
+}
+export async function getCourseById(id){
+    try {      
+        return await placeholderApi.get(`/course/getCourseById/${id}`);
     } catch (error) {
         return Promise.reject({ error: 'Could not get details' });
     }

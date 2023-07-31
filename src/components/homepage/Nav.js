@@ -6,8 +6,9 @@ import { navigation } from '../../components/homepage/data';
 import '../../styles/Nav.css';
 
 const scrollToBottom = () => {
-  window.scrollTo(0, 6130);
+  window.scrollTo(0, 4950);
 };
+
 
 const Nav = () => {
   return (

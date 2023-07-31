@@ -17,6 +17,14 @@ export async function deleteBooking(id) {
         return Promise.reject({ error: 'Could not delete' });
     }
 }
+export async function setPaymentStatus(id) {
+    try {
+        const { data } = await placeholderApi.post(`/booking/setPaymentStatus/${id}`);
+        return Promise.resolve({ data });
+    } catch (error) {
+        return Promise.reject({ error: 'Could not delete' });
+    }
+}
 export async function updateBooking(id) {
     try {
         return await placeholderApi.post(`/booking/updateBooking/${id}`);
@@ -80,7 +88,7 @@ export async function getRejectedBookings() {
 }
 export async function getBookingOfUser(id) {
     try {
-        const { data } = await placeholderApi.delete(`/booking/getBookingOfUser/${id}`);
+        const { data } = await placeholderApi.get(`/booking/getBookingOfUser/${id}`);
         return Promise.resolve({ data });
     } catch (error) {
         return Promise.reject({ error: 'Could not delete' });

@@ -3,11 +3,15 @@ import Select from 'react-select'
 import { getMentors } from '../helper/helper';
 import { getAllCourses } from '../helper/courseHelper';
 import { deleteGrade, createGrade, getAllGrades } from '../helper/gradeHelper'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { getFile, uploadFile } from '../helper/upload';
 import convertToBase64 from "../helper/convert";
+import avatar from '../assets/profile.png';
+import {
 
+    FaPortrait
+} from "react-icons/fa";
 export default function Grade() {
     const [mentors, setMentor] = useState([])
     // const [customers, setCustomers] = useState([])
@@ -15,11 +19,13 @@ export default function Grade() {
     const [selectedFileUpload, setSelectedFileUpload] = useState();
     const [courses, setCourses] = useState([])
     const [grades, setGrades] = useState([])
+    const [showCard, setShowCard] = useState(false);
+    const [detail, setDetail] = useState([]);
     const [newData, setNewData] = useState([])
     const [showModal, setShowModal] = useState(false);
 
     const fetchData = async () => {
-        let query_1 = {'active' : 1,'username' : ''};
+        let query_1 = { 'active': 1, 'fullName': '' };
         const courses = await getAllCourses();
         const mentors = await getMentors(query_1)
         const grades = await getAllGrades();
@@ -46,14 +52,14 @@ export default function Grade() {
             navigate('*');
         } else {
             let dataPromise = fetchData();
-            toast.promise(dataPromise, {
-                loading: 'Loading...',
-                success: <b>Successfully...!</b>,
-                error: <b>Failed !!!</b>
-            })
-            dataPromise.then(function () { navigate('/grade') }).catch(error => {
-                console.error(error);
-            });
+            // toast.promise(dataPromise, {
+            //     loading: 'Loading...',
+            //     success: <b>Successfully...!</b>,
+            //     error: <b>Failed !!!</b>
+            // })
+            // dataPromise.then(function () { navigate('/grade') }).catch(error => {
+            //     console.error(error);
+            // });
         }
     }, []);
     const handleChange = (event) => {
@@ -120,7 +126,7 @@ export default function Grade() {
         setNewData({ ...newData, [meta.name]: event.value });
     }
     let optionsMentor = mentors.map(function (mentor) {
-        return { value: mentor._id, label: mentor.username };
+        return { value: mentor._id, label: mentor.fullName };
     })
     let optionsCourse = courses.map(function (course) {
         return { value: course._id, label: course.courseName };
@@ -128,7 +134,7 @@ export default function Grade() {
     let optionsDay = chooseDayInWeek.map(function (day) {
         return { value: day.value, label: day.value };
     })
-  
+
     // Tính toán các chỉ số cho phân trang
     const [currentPage, setCurrentPage] = useState(1);
     const [gradePerPage, setGradePerPage] = useState(3);
@@ -140,30 +146,31 @@ export default function Grade() {
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
+    const handleShow = (user) => {
+        setDetail(user)
+        setShowCard(true);
+    }
     return (
         <div className='max-w-4x2' style={{ marginLeft: '8rem' }}>
             <Toaster position='top-center' reverseOrder={false}></Toaster>
-            <div>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <div className='ml-28 py-4'>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-10 rounded"
                     onClick={() => createModal()}>
-                    New Grade
+                    New Class
                 </button>
             </div>
 
-            <div className='max-w-4x2 mx-auto'>
+            <div className='max-w-4x2 mx-auto ml-24'>
                 <table className='w-full whitespace-nowrap bg-white overflow-hidden rounded-lg shadow-sm mb-8'>
                     <thead>
                         <tr className='text-left font-bold'>
 
                             <th className='px-6 pt-5 pb-4'>Mentor</th>
-                            <th className='px-6 pt-5 pb-4'>Number Of Student</th>
-                            <th className='px-6 pt-5 pb-4'>Course</th>
-                            <th className='px-6 pt-5 pb-4'>Grade Name</th>
-                            <th className='px-6 pt-5 pb-4'>Image</th>
-                            <th className='px-6 pt-5 pb-4'>Room</th>
-                            <th className='px-6 pt-5 pb-4'>On</th>
-                            <th className='px-6 pt-5 pb-4'>From</th>
-                            <th className='px-6 pt-5 pb-4'>To</th>
+
+                            <th className='px-6 pt-5 pb-4'>Class Name</th>
+
+
+                            <th className='px-6 pt-5 pb-4'>Detail</th>
                             <th className='px-6 pt-5 pb-4'>Action</th>
                         </tr>
                     </thead>
@@ -174,34 +181,34 @@ export default function Grade() {
 
                                 <td className='px-6 py-4'>{mentors.map((mentor) => {
                                     if (grade.instructor == mentor._id)
-                                        return mentor.username
+                                        return mentor.fullName
 
                                     // data cua? booking
                                 })}</td>
-                                <td className='px-6 py-4'>{grade.nOfStudent}</td>
+                                {/* <td className='px-6 py-4'>{grade.nOfStudent}</td>
                                 <td className='px-6 py-4'>{courses.map((course) => {
                                     if (grade.course == course._id)
                                         return course.courseName
 
 
-                                })}</td>
-                                <td className='px-6 py-4'>{grade.gradeName}</td>
-                                <td className="px-6 py-4">
+                                })}</td> */}
+                                <td className='px-6 py-4'><Link to={`/showStudent/${grade._id}`}>{grade.gradeName}</Link></td>
+                                {/* <td className="px-6 py-4">
                                     <img src={showImg(grade._image)} alt="" />
-                                </td>
-
-                                <td className='px-6 py-4'>{grade.room}</td>
+                                </td> */}
+                                <td className="px-6 py-4"><button onClick={() => handleShow(grade)} className="mr-2 rounded bg-slate-400 px-4 py-2 font-bold text-white hover:bg-slate-700"><FaPortrait></FaPortrait></button></td>
+                                {/* <td className='px-6 py-4'>{grade.room}</td>
                                 <td className='px-6 py-4'>{grade.weekDay}</td>
                                 <td className='px-6 py-4'>{grade.startTimeGrade}</td>
-                                <td className='px-6 py-4'>{grade.endTimeGrade}</td>
-                                <td className='px-6 py-4'>
+                                <td className='px-6 py-4'>{grade.endTimeGrade}</td> */}
+                                <td className='px-6 py-4'>{roleId == 4 && (<button
+                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                    onClick={() => handleDelete(grade._id)}
+                                >
+                                    Delete
+                                </button>)}
 
-                                    <button
-                                        className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-                                        onClick={() => handleDelete(grade._id)}
-                                    >
-                                        Delete
-                                    </button>
+
                                 </td>
                             </tr>
                         ))}
@@ -219,7 +226,7 @@ export default function Grade() {
                                     {/*header*/}
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                         <h3 className="text-3xl font-semibold">
-                                            Create Grade
+                                            Create Class
                                         </h3>
                                         <button
                                             className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -231,24 +238,30 @@ export default function Grade() {
                                         </button>
                                     </div>
                                     {/*body*/}
-                                    <form>
-                                        <div className="mb-4">
+                                    <form className='mr-6'>
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">Course :</label>
-                                            <Select options={optionsCourse} name="course" onChange={(event, meta) => handleSelectCourse(event, meta)} />
+                                            <Select options={optionsCourse} name="course" onChange={(event, meta) => handleSelectCourse(event, meta)}
+                                                className="w-60 rounded" />
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">Mentor :</label>
-                                            <Select options={optionsMentor} name="instructor" onChange={(event, meta) => handleSelectMentor(event, meta)} />
+                                            <Select options={optionsMentor} name="instructor" onChange={(event, meta) => handleSelectMentor(event, meta)}
+                                                className="w-60 rounded" />
+
                                         </div>
-                                        <div className="mb-4">
-                                            <label className="block text-gray-700 font-bold mb-2">Grade Name :</label>
-                                            <input type="text" name="gradeName" onChange={(event) => handleChange(event)} ></input>
+                                        <div className="mb-4 ml-6">
+                                            <label className="block text-gray-700 font-bold mb-2">Class Name :</label>
+                                            <input type="text" name="gradeName" onChange={(event) => handleChange(event)}
+                                                className="w-full px-4 py-2 text-base text-gray-700 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+                                                placeholder="Enter Class Name"
+                                            >
+                                            </input>
                                         </div>
-                                        <div class="mb-3">
+                                        <div className="mb-4 ml-6">
                                             <label
                                                 for="formFile"
-                                                class="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                                            >
+                                                className="mb-2 inline-block text-neutral-700 dark:text-neutral-200 font-bold text-lg bg-blue-400 px-4 py-2 rounded-lg shadow-md cursor-pointer transition-colors hover:bg-blue-500 hover:text-white"                                            >
                                                 Click here to upload image
                                             </label>
                                             <input
@@ -257,28 +270,45 @@ export default function Grade() {
                                                 id="formFile"
                                                 onChange={(event) => onUpload(event)}
                                             />
+                                            {selectedFile && (
+                                                <img
+                                                    className="mt-4"
+                                                    src={selectedFile}
+                                                    alt=""
+                                                    style={{ maxWidth: '200px', maxHeight: '200px' }}
+                                                />
+                                            )}
                                         </div>
-                                        <img src={selectedFile}></img>
-                                        <div className="mb-4">
+
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">Description :</label>
-                                            <input type="text" name="description" onChange={(event) => handleChange(event)} ></input>
+                                            <textarea
+                                                name="description"
+                                                onChange={(event) => handleChange(event)}
+                                                rows={5}
+                                                className="w-full px-3 py-2 border rounded-md resize-none focus:border-blue-500 border-black"
+                                                placeholder='Please add a description here!'
+                                            ></textarea>
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">Room :</label>
-                                            <input type="text" name="room" onChange={(event) => handleChange(event)} ></input>
+                                            <input type="text" name="room" onChange={(event) => handleChange(event)}
+                                                className=" px-4 py-2 text-base text-gray-700 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+                                                placeholder="Enter Room!">
+                                            </input>
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">Day :</label>
-                                            <Select options={optionsDay} name="weekDay" onChange={(event, meta) => handleSelectDay(event, meta)} />
+                                            <Select options={optionsDay} name="weekDay" onChange={(event, meta) => handleSelectDay(event, meta)}
+                                                className="w-60 rounded" />
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">From :</label>
                                             <input type="time" name="startTimeGrade" onChange={(event) => handleChange(event)} ></input>
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="mb-4 ml-6">
                                             <label className="block text-gray-700 font-bold mb-2">To :</label>
                                             <input type="time" name="endTimeGrade" onChange={(event) => handleChange(event)}></input>
-
                                         </div>
 
                                         <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -290,7 +320,7 @@ export default function Grade() {
                                                 Close
                                             </button>
                                             <button
-                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-green-700 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={(event) => handleCreate(event, newData)}                                        >
                                                 Create
                                             </button>
@@ -305,6 +335,88 @@ export default function Grade() {
                             </div>
                         </div>
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                    </>
+                ) : null}
+                {showCard ? (
+                    <>
+                        <div className="fixed inset-1  z-50 items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
+                            <div className="relative mx-auto my-6 w-auto max-w-3xl">
+                                {/*content*/}
+
+                                {/*header*/}
+                                <div className="flex items-start justify-between rounded-t  p-5">
+
+                                    <button
+                                        className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
+                                        onClick={() => setShowModal(false)}
+                                    >
+                                        <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-5 outline-none focus:outline-none">
+                                            ×
+                                        </span>
+                                    </button>
+                                </div>
+                                {/*body*/}
+                                <div>
+
+                                    <div className=" bg-gradient-to-r from-purple-500 to-green-400 rounded-lg">
+                                        <div className="grid grid-cols-3">
+                                            <div className="col-span-1"></div>
+                                            <img className='mt-12 w-full rounded-full' src={showImg(detail._image)} alt="Yoga" />
+                                            <div className="col-span-1"></div>
+                                        </div>
+                                        <div className="grid grid-cols-2 ml-20 mt-14">
+                                            <div className="col-span-1 ml-10 mb-8">
+                                                <p><b>Mentor:</b> {mentors.map((mentor) => {
+                                                    if (detail.instructor == mentor._id)
+                                                        return mentor.fullName
+
+                                                    // data cua? booking
+                                                })}</p>
+
+                                                <p><b>Course:</b> {courses.map((course) => {
+                                                    if (detail.course == course._id)
+                                                        return course.courseName
+                                                })}</p>
+                                                <p><b>Price:</b> {courses.map((course) => {
+                                                    if (detail.course == course._id)
+                                                        return course.price
+                                                })}$</p>
+                                                <p><b>Class: </b> {detail.gradeName}</p>
+                                                <p><b>Number of student: </b>{detail.nOfStudent}</p>
+                                                <p><b>Room: </b> {detail.room}</p>
+                                                <p><b>Week Day: </b>{detail.weekDay}</p>
+                                            </div>
+                                            <div className="col-span-1 mb-8">
+                                                <p><b>Time: </b>{detail.startTimeGrade + " to " + detail.endTimeGrade}</p>
+                                                <p><b>Description: </b>{detail.description}</p>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                        <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
+                                            <button
+                                                className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                                                type="button"
+                                                onClick={() => setShowCard(false)}
+                                            >
+                                                Close
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    {/* <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Update
+                                    </button> */}
+                                </div>
+                                {/*footer*/}
+
+                            </div>
+                        </div>
+                        <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
                     </>
                 ) : null}
                 <Pagination

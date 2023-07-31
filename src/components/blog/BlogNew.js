@@ -22,7 +22,7 @@ export default function BlogNew() {
     return getFile(id)
   }
   const fetchData = async () => {
-    let query = {'username' : 0,'isActive' : 1}
+    let query = {'fullName' : '','isActive' : 1}
     const blogs = await getAllBlogs();
     const authors = await getAllUser(query);
     setBlogs(blogs.data)

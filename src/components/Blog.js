@@ -32,18 +32,18 @@ export default function Blog() {
       navigate("*");
     } else {
       let dataPromise = fetchData();
-      toast.promise(dataPromise, {
-        loading: "Loading...",
-        success: <b>Successfully...!</b>,
-        error: <b>Failed !!!</b>,
-      });
-      dataPromise
-        .then(function () {
-          navigate("/blog");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // toast.promise(dataPromise, {
+      //   loading: "Loading...",
+      //   success: <b>Successfully...!</b>,
+      //   error: <b>Failed !!!</b>,
+      // });
+      // dataPromise
+      //   .then(function () {
+      //     navigate("/blog");
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
     }
   }, []);
 
@@ -136,16 +136,18 @@ export default function Blog() {
   return (
     <div className="max-w-4x2" style={{ marginLeft: "15rem" }}>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div class="">
+      <div className="my-10 mt-6 items-center ">
         <div>
           {roleId >= 3 && (
             <>
-              <button
-                class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                onClick={() => createModal()}
-              >
-                New Blog
-              </button>
+              <div className="py-4">
+                <button
+                  class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 "
+                  onClick={() => createModal()}
+                >
+                  New Blog
+                </button>
+              </div>
             </>
           )}
         </div>
@@ -168,17 +170,21 @@ export default function Blog() {
                 {/* <td className='px-6 py-4'>{blog.author}</td> */}
                 <td className="px-6 py-4">{blog.user.username}</td>
                 <td className='px-6 py-4'>
-                {showContent ? blog.content : blog.content.split(' ').slice(0, 20).join(' ')}
-                {blog.content.split(' ').length > 20 ? (
-                  <span onClick={toggleShowContent} className='text-blue-500 cursor-pointer'>
-                    {showContent ? ' Thu gọn' : ' Xem thêm...'}
-                  </span>
-                ) : (
-                  ''
-                )}
-              </td>
+                  {showContent ? blog.content : blog.content.split(' ').slice(0, 20).join(' ')}
+                  {blog.content.split(' ').length > 20 ? (
+                    <span onClick={toggleShowContent} className='text-blue-500 cursor-pointer'>
+                      {showContent ? ' Thu gọn' : ' Xem thêm...'}
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                </td>
                 <td className="px-6 py-4">
-                  <img src={showImg(blog._image)} alt="" />
+                  <img
+                    src={showImg(blog._image)}
+                    alt=""
+                    style={{ width: '400px', height: '200px', objectFit: 'cover' }}
+                  />
                 </td>
                 <td className="px-6 py-4">
                   {roleId >= 3 && (
@@ -204,7 +210,7 @@ export default function Blog() {
                 <div className="relative flex w-full flex-col rounded-lg border-0 bg-white shadow-lg outline-none focus:outline-none">
                   {/*header*/}
                   <div className="flex items-start justify-between rounded-t border-b border-solid border-slate-200 p-5">
-                    <h3 className="text-3xl font-semibold">Create Blog</h3>
+                    <h3 className="text-3xl font-semibold">Create New Blog</h3>
                     <button
                       className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
@@ -215,41 +221,51 @@ export default function Blog() {
                     </button>
                   </div>
                   {/*body*/}
-                  <form>
-                    <div className="mb-4">
+                  <form className="pr-6">
+                    <div className="mb-4 ml-6">
                       <label className="mb-2 block font-bold text-gray-700">
-                        Title :
+                        Title:
                       </label>
                       <input
                         type="text"
                         name="title"
                         onChange={(event) => handleChange(event)}
-                      ></input>
-                    </div>
-                    <div class="mb-3">
-                      <label
-                        for="formFile"
-                        class="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                      >
-                        Click here to upload image
-                      </label>
-                      <input
-                        class="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
-                        type="file"
-                        id="formFile"
-                        onChange={(event) => onUpload(event)}
+                        className="w-full px-4 py-2 rounded border border-gray-600 focus:outline-none focus:ring focus:border-blue-500 "
+                        placeholder="Please enter title here"
                       />
                     </div>
-                    <img src={selectedFile}></img>
-                    <div className="mb-4">
-                      <label className="mb-2 block font-bold text-gray-700">
-                        Content :
+                    <div className="mb-4 ml-6">
+                      <label className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                        <input
+                          type="file"
+                          id="formFile"
+                          onChange={(event) => onUpload(event)}
+                          style={{ display: 'none' }}
+                        />
+                        Choose file
                       </label>
-                      <input
-                        type="text"
+
+                      {selectedFile && (
+                        <img
+                          className="mt-4"
+                          src={selectedFile}
+                          alt=""
+                          style={{ maxWidth: '200px', maxHeight: '200px' }}
+                        />
+                      )}
+                    </div>
+                    <div className="mb-4 ml-6">
+                      <label className="mb-2 block font-bold text-gray-700">
+                        Content:
+                      </label>
+                      <textarea
                         name="content"
                         onChange={(event) => handleChange(event)}
-                      ></input>
+                        rows="5"
+                        className="resize-none w-full focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+                        placeholder='Please enter content here!'
+
+                      ></textarea>
                     </div>
 
                     <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
@@ -261,16 +277,14 @@ export default function Blog() {
                         Close
                       </button>
                       <button
-                        className="mb-1 mr-1 rounded bg-emerald-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                        className="mb-1 mr-1 rounded bg-emerald-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:bg-green-700 focus:outline-none active:bg-emerald-600"
                         onClick={(event) => handleCreate(event, newData)}
                       >
                         Create
                       </button>
                     </div>
-                    {/* <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Update
-                                    </button> */}
                   </form>
+
                   {/*footer*/}
                 </div>
               </div>
@@ -306,11 +320,10 @@ const Pagination = ({ blogsPerPage, totalBlogs, currentPage, paginate }) => {
           <li key={number}>
             <button
               onClick={() => paginate(number)}
-              className={`rounded-lg px-3 py-1 ${
-                number === currentPage
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
-              }`}
+              className={`rounded-lg px-3 py-1 ${number === currentPage
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+                }`}
             >
               {number}
             </button>

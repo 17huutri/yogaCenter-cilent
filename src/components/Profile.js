@@ -7,11 +7,11 @@ import convertToBase64 from '../helper/convert';
 import useFetch from '../hooks/fetch.hook';
 import { updateUser } from '../helper/helper'
 import { useNavigate } from 'react-router-dom'
-
+import { FaPen } from 'react-icons/fa';
 import styles from '../styles/Username.module.css';
 import extend from '../styles/Profile.module.css'
-import Footer from './homepage/Footer';
-import Header from './homepage/Header';
+// import Footer from './homepage/Footer';
+// import Header from './homepage/Header';
 
 export default function Profile() {
 
@@ -21,6 +21,7 @@ export default function Profile() {
 
   const formik = useFormik({
     initialValues: {
+      fullName: apiData?.fullName || '',
       phone: apiData?.phone || '',
       email: apiData?.email || '',
       description: apiData?.description || '',
@@ -51,61 +52,59 @@ export default function Profile() {
   }
 
   // logout handler function
-  function userLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('roleId');
-    localStorage.removeItem('username');
-    navigate('/')
-  }
+  // function userLogout() {
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('roleId');
+  //   localStorage.removeItem('username');
+  //   navigate('/')
+  // }
 
   if (isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
   if (serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 
   return (
-    <div className='overflow-hidden'>
-    
-    <div className="mx-10 px-5 py-10">
 
-      <Toaster position='top-center' reverseOrder={false}></Toaster>
+    <div className='bg-slate-200'>
 
-      <div className='flex justify-center items-center h-70'>
-        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "45%", paddingTop: '3em', paddingBottom: '3em' }}>
+      <div className="max-w-7xl mx-auto px-44 py-8 ml-60">
+        <div className="relative">
 
-          <div className="title flex flex-col items-center">
-            <h4 className='text-5xl font-bold'>Profile</h4>
-            <span className='py-4 text-1xl w-2/3 text-center text-gray-500'>
-              You can update the details.
-            </span>
-          </div>
+          <img src='assets/anhBia.png' alt="Ảnh bìa" className="w-full h-72 object-cover rounded-t-lg" />
+          <Toaster position='top-center' reverseOrder={false}></Toaster>
 
           <form className='py-1' onSubmit={formik.handleSubmit}>
-            <div className='profile flex justify-center py-10'>
-              <label htmlFor="profile">
-                <img src={file || apiData?.profile   || avatar} className={`${styles.profile_img} ${extend.profile_img}`} alt="avatar" />
-              </label>
+            <label htmlFor="profile">
+              <img src={file || apiData?.profile || avatar} className={`${styles.profile_img} ${extend.profile_img} w-48 h-48 object-cover rounded-full border-4 border-white absolute bottom-0 left-4 -mb-10 ml-8`} alt="avatar" />
+            </label>
+            <input onChange={onUpload} type="file" id='profile' name='profile' />
+          </form>
+          <h1 className=' text-center mt-8 text-4xl font-serif'><b>{apiData?.fullName}</b></h1>
+        </div>
+        <div className='py-16'>
 
-              <input onChange={onUpload} type="file" id='profile' name='profile' />
-            </div>
-
-            <div className="textbox flex flex-col items-center gap-6">
-              <input {...formik.getFieldProps('phone')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Mobile No.' />
-              <div className="name flex w-3/4 gap-10">
-                <input {...formik.getFieldProps('email')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' />
+          <form className='py-1' onSubmit={formik.handleSubmit}>
+            <div className="textbox flex flex-col">
+              <label className='ml-24 text-lg'>Full name</label>
+              <div className='ml-24 text-lg'>
+                <input {...formik.getFieldProps('fullName')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Full Name*' />
               </div>
-              <input {...formik.getFieldProps('address')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Address' />
-              <div className="name flex w-3/4 gap-10">
-                <input {...formik.getFieldProps('description')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Description*' />
+              <label className='ml-24 mt-5 text-lg'>Phone</label><div className='ml-24'><input {...formik.getFieldProps('phone')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Mobile No.' /></div>
+              <label className='ml-24 mt-5 text-lg'>Email</label><div className='ml-24'><input {...formik.getFieldProps('email')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Email*' /></div>
+              <label className='ml-24 mt-5 text-lg'>Address</label><div className='ml-24'><input {...formik.getFieldProps('address')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Address' /></div>
+              <label className='ml-24 mt-5 text-lg'>Description</label><div className='ml-24'><textarea rows="5" cols="50" {...formik.getFieldProps('description')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Description*' /></div>
+              <div className='ml-24'>
+                <button className={styles.btn} type='submit'>Update</button>
               </div>
-              <button className={styles.btn} type='submit'>Update</button>
-
-
             </div>
           </form>
 
         </div>
+
       </div>
-    </div>
+
 
     </div>
   )
 }
+
+
