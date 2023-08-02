@@ -38,7 +38,8 @@ import ShowClassByMentor from "./components/management/ShowClassByMentor.js";
 import Schedule from './components/Schedule.js'
 import ScheduleStudent from './components/ScheduleForStudent.js'
 import ScheduleMentor from './components/ScheduleForMentor.js'
-import Contact from "./components/homepage/Contact.js";
+import Contact from "./components/contact/contactEmail.js";
+import ContactEmail from "./components/contact/contactEmail.js";
 // import Testing from "./components/Testing.js";
 const router = createBrowserRouter([
 
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/contact',
-        element: <Contact></Contact>
+        element: <ContactEmail></ContactEmail>
     },
     {
         path: '/scheduleStudent',
