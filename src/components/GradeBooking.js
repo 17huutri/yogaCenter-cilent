@@ -5,7 +5,8 @@ import Footer from "./homepage/Footer";
 export default function GradeBooking() {
     return (
         <div className='overflow-hidden'>
-            <Header />
+            <div className="px-8">
+                <Header /></div>
             <Content />
             <Footer />
         </div>

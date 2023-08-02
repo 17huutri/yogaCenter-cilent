@@ -54,8 +54,7 @@ const Header = () => {
   return (
     <header
       className={`${header ? 'top-0' : 'top-9'
-        } fixed bg-white w-full max-w-[90vw] lg:max-w-[1170px] mx-auto rounded-md h-[90px] shadow-primary px-4 lg:px-8 z-20 transition-all duration-500 flex items-center justify-between`}
-    >
+        } fixed bg-white w-full max-w-[90vw] lg:max-w-[1170px] mx-auto rounded-md h-[90px] shadow-primary px-5 z-20 transition-all duration-500 flex items-center justify-between ml-6`}>
       <div className='flex item-center'>
         <a href='/'>
           <img src={Logo} alt='' className='absolute top-[-70px] left-[-80px] w-[370px] h-[300px]' />

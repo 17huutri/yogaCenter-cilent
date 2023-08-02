@@ -8,7 +8,7 @@ export const Homeblog = () => {
   return (
     <>
       {/*  <Slider />*/}
-      <Header />
+      <div className="px-8"> <Header /></div>
       <Category />
       <BlogNew />
       <Footer />

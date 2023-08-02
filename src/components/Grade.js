@@ -147,8 +147,15 @@ export default function Grade() {
         setCurrentPage(pageNumber);
     };
     const handleShow = (user) => {
+        console.log(user);
         setDetail(user)
         setShowCard(true);
+
+    }
+    function convertDate(day) {
+        const date = new Date(day);
+        // var options = {hour : "numeric",minute : "numeric"};
+        return date.toLocaleDateString('vi-VN');
     }
     return (
         <div className='max-w-4x2' style={{ marginLeft: '8rem' }}>
@@ -385,6 +392,14 @@ export default function Grade() {
                                                 <p><b>Number of student: </b>{detail.nOfStudent}</p>
                                                 <p><b>Room: </b> {detail.room}</p>
                                                 <p><b>Week Day: </b>{detail.weekDay}</p>
+                                                <p><b>Start:</b> {courses.map((course) => {
+                                                    if (detail.course == course._id)
+                                                        return convertDate(course.startTime)
+                                                })}</p>
+                                                <p><b>End:</b> {courses.map((course) => {
+                                                    if (detail.course == course._id)
+                                                        return convertDate(course.endTime)
+                                                })}</p>
                                             </div>
                                             <div className="col-span-1 mb-8">
                                                 <p><b>Time: </b>{detail.startTimeGrade + " to " + detail.endTimeGrade}</p>
