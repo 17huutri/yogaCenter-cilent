@@ -7,7 +7,7 @@
 }
 
 .lg\:bg-circle {
-    background: url(../../../client/src/assets/img/hero/bg.png);
+    background: url(../../src/assets/img/hero/bg.png);
     background-repeat: no-repeat;
     background-position: right top;
 }

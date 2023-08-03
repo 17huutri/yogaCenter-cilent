@@ -227,9 +227,10 @@ const Calendar = () => {
           plugins={[dayGridPlugin]}
           initialView="dayGridWeek"
           headerToolbar={{
-            left: 'next today',
+            right: 'next today',
+            left: '',
             center: 'title',
-            right: 'dayGridWeek'
+
           }}
           eventContent={(info) => <EventItem info={info} />}
           editable={true}
@@ -239,6 +240,7 @@ const Calendar = () => {
       <Footer />
     </div>
   );
+
 };
 
 export default Calendar;
