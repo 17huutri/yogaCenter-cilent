@@ -84,7 +84,7 @@ export default function Register() {
       toast.promise(registerPromise, {
         loading: 'Creating...',
         success: <b>Register Successfully...!</b>,
-        error: <b>Could not Register.</b>
+        error: <b>Could not register.</b>
       });
 
       registerPromise.then(function () { navigate('/confirmAccount') }).catch(error => {
@@ -135,12 +135,12 @@ export default function Register() {
               </div>
 
               <div className="textbox flex flex-col items-center gap-6">
-                <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email*' />
-                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Username*' />
-                <input {...formik.getFieldProps('password')} onChange={formik.handleChange}
+                <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email*' required/>
+                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Username*'required />
+                <input {...formik.getFieldProps('password')}  required onChange={formik.handleChange}
                   onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='Password must be 8-50 characters' />
                 <input {...formik.getFieldProps('confirm_pwd')} onChange={formik.handleChange}
-                  onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='Confirm Password*' />
+                  onBlur={formik.handleBlur} className={styles.textbox} required type="password" placeholder='Confirm Password*' />
                 <button className={styles.btn} type='submit'>Register</button>
               </div>
 

@@ -6,8 +6,9 @@ import { resetPassword } from '../helper/helper'
 import { useAuthStore } from '../store/store';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook'
-
-import styles from '../styles/Username.module.css';
+import ReactPlayer from 'react-player';
+import video from '../assets/2.mp4';
+import styles from '../styles/Reset.module.css';
 import Header from './homepage/Header';
 import Footer from './homepage/Footer';
 export default function Reset() {
@@ -49,36 +50,38 @@ export default function Reset() {
 
   return (
     <div className='overflow-hidden'>
-      <Header/>
+      <Header />
       <div className="mx-auto">
 
         <Toaster position='top-center' reverseOrder={false}></Toaster>
+        <div className={styles.videoContainer}>
+          <ReactPlayer url={video} playing loop muted width="100%" height="100%" />
+          <div className='flex justify-center items-center h-70'>
+            <div className={styles.glass} style={{ width: "50%" }}>
 
-        <div className='flex justify-center items-center h-70'>
-          <div className={styles.glass} style={{ width: "50%" }}>
-
-            <div className="title flex flex-col items-center">
-              <h4 className='text-5xl font-bold'>Reset</h4>
-              <span className='py-4 text-1xl w-2/3 text-center text-gray-500'>
-                Enter new password.
-              </span>
-            </div>
-
-            <form className='py-20' onSubmit={formik.handleSubmit}>
-              <div className="textbox flex flex-col items-center gap-6">
-                <input {...formik.getFieldProps('password')} onChange={formik.handleChange}
-                  onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='New Password' />
-                <input {...formik.getFieldProps('confirm_pwd')} onChange={formik.handleChange}
-                  onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='Repeat Password' />
-                <button className={styles.btn} type='submit'>Reset</button>
+              <div className="title flex flex-col items-center">
+                <h4 className='text-5xl font-bold'>Reset</h4>
+                <span className='py-4 text-1xl w-2/3 text-center text-gray-800'>
+                  Enter new password.
+                </span>
               </div>
 
-            </form>
+              <form className='py-20' onSubmit={formik.handleSubmit}>
+                <div className="textbox flex flex-col items-center gap-6">
+                  <input {...formik.getFieldProps('password')} onChange={formik.handleChange}
+                    onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='New Password' />
+                  <input {...formik.getFieldProps('confirm_pwd')} onChange={formik.handleChange}
+                    onBlur={formik.handleBlur} className={styles.textbox} type="password" placeholder='Repeat Password' />
+                  <button className={styles.btn} type='submit'>Reset</button>
+                </div>
 
+              </form>
+
+            </div>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   )
 }

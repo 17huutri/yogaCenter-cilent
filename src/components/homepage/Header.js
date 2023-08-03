@@ -42,6 +42,7 @@ const Header = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('roleId');
     localStorage.removeItem('id');
+    localStorage.removeItem("__paypal_storage__");
     setIsLoggedIn(false);
     setUsername('');
     setRoleId(null);

@@ -32,7 +32,7 @@ export default function ShowStaffs() {
     const fetchData = async (searchName, active) => {
         let query = { 'fullName': searchName || '', 'active': active || 0 }
         setCurrentPage(1);
-        console.log(query);
+        // console.log(query);
         const response = await getStaffs(query);
         setData(response.data);
     };
@@ -41,8 +41,8 @@ export default function ShowStaffs() {
     })
 
     const handleSelectRole = (event, meta) => {
-        console.log(meta.name);
-        console.log(event.value);
+        // console.log(meta.name);
+        // console.log(event.value);
         setUpdatedUserData({ ...updatedUserData, [meta.name]: event.value });
     }
     const [active, setActive] = useState('1');
@@ -298,8 +298,8 @@ value={updatedUserData.roleId}
                   </div> */}
 
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 font-bold mb-2">Role Name :</label>
-                                        <Select options={optionsRole} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} />
+                                        <label className="block text-gray-700 ml-6 font-bold mb-2">Role Name :</label>
+                                        <Select options={optionsRole} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} className="w-40 rounded ml-6" />
                                     </div>
 
 

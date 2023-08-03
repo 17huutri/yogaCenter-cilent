@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllGrades, getGradeById } from "../helper/gradeHelper";
+import { checkAttendance, getAllGrades, getGradeById } from "../helper/gradeHelper";
 import { getStudentInGrade, kickStudent } from "../helper/helper";
 
 
@@ -15,6 +15,7 @@ function ShowStudent() {
   const [students, setStudents] = useState([]);
   const [grade, setGrade] = useState('');
   const navigate = useNavigate();
+
   const getStudentData = async () => {
     try {
       const studentData = await getStudentInGrade(gradeId);
@@ -23,7 +24,7 @@ function ShowStudent() {
       console.error(error);
     }
   };
-  const [grades,setGrades] = useState([]);
+  const [grades, setGrades] = useState([]);
   const getGradeData = async () => {
     try {
       const gradeData = await getAllGrades();
@@ -34,8 +35,8 @@ function ShowStudent() {
       console.error(error);
     }
   };
-  async function findGrade(grades,id){
-    for (let i = 0 ;i < grades.length ; i++){
+  async function findGrade(grades, id) {
+    for (let i = 0; i < grades.length; i++) {
       if (grades[i]._id == id) return await grades[i].gradeName;
     }
   }
@@ -47,8 +48,8 @@ function ShowStudent() {
     } else if (token == null) {
       navigate('*');
     } else {
-      getStudentData();
-      getGradeData();
+      getStudentData().catch((error) => console.log(error));
+      getGradeData().catch((error) => console.log(error));
       // console.log(await findGrade(grades,gradeId))
       // console.log(grades[4]._id == gradeId) 
       console.log(gradeId)
@@ -71,52 +72,71 @@ function ShowStudent() {
       console.error(error)
     }
   }
+  const handleAttendance = async (event, id) => {
+    event.currentTarget.disabled = true;
+    try {
+      let query = { 'grade': gradeId, 'user': id, 'date': Date.now(), 'isAttended': 1 }
+      console.log(query)
+      await checkAttendance(query);
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  const handleAbsent = async (event, id) => {
+    event.currentTarget.disabled = true;
+    try {
+      let query = { 'grade': gradeId, 'user': id, 'date': Date.now(), 'isAttended': 0 }
+      console.log(query)
+      await checkAttendance(query);
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
+    <div className="container mx-auto px-4" style={{ marginLeft: '205px' }}>
 
 
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold mb-4 text-blue-700">Student List - Class : {grade.gradeName}</h1>
-      <div>{roleId >= 3 && <td className='px-6 py-4 text-blue-700'><Link to={`/grade`}>Back</Link></td>}</div>
-      <div>{roleId == 2 && <td className='px-6 py-4 text-blue-700'><Link to={`/showClassByMentor`}>Back</Link></td>}</div>
 
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 border">No</th>
-              <th className="px-4 py-2 border">Name</th>
-              <th className="px-4 py-2 border">Email</th>
-            
-              <th className="px-4 py-2 border">Phone</th>
-              <th className="px-4 py-2 border">Actions</th>
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-bold mb-4 text-blue-700 mt-8">Student List - Class : {grade.gradeName}</h1>
+        <div>{roleId >= 3 && <td className='px-4 py-2 text-blue-700'><Link to={`/grade`}>Back</Link></td>}</div>
+        <div>{roleId == 2 && <td className='px-4 py-2 text-blue-700'><Link to={`/showClassByMentor`}>Back</Link></td>}</div>
 
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student, index) => (
-              <tr key={student._id}>
-                <td className="border px-4 py-2">{index + 1}</td>
-                <td className="border px-4 py-2">{student.fullName}</td>
-                <td className="border px-4 py-2">{student.email}</td>
-                <td className="border px-4 py-2">{student.phone}</td>
-                <td className="border px-4 py-2">{roleId >= 3 && <button
-                  className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-                  onClick={(event) => handleDelete(event, student._id)}
-                >
-                  Kick
-                </button>}
-                  {roleId == 2 && <button
-                    className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-                  // onClick={(event) => handleDelete(event, student._id)}
-                  >
-                    Attendance
-                  </button>}
-                </td>
-                {/* <td className="border px-4 py-2">{student.roleId}</td> */}
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full mt-4">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border">No</th>
+                <th className="px-4 py-2 border">Name</th>
+                <th className="px-4 py-2 border">Profile</th>
+                <th className="px-4 py-2 border">Email</th>
+
+                <th className="px-4 py-2 border">Phone</th>
+
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {students.map((student, index) => (
+                <tr key={student._id}>
+                  <td className="border px-4 py-2 text-center">{index + 1}</td>
+                  <td className="border px-4 py-2 text-center">{student.fullName}</td>
+                  <td>
+                    <div className="flex items-center justify-center">
+                      <img className="rounded-full w-32 h-32 border-2 border-gray-300 shadow-md hover:scale-105 transition-transform duration-300" src={student.profile} alt='profile' />
+                    </div>
+                  </td>
+                  <td className="border px-4 py-2 text-center">{student.email}</td>
+
+                  <td className="border px-4 py-2 text-center">{student.phone}</td>
+
+                  {/* <td className="border px-4 py-2">{student.roleId}</td> */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

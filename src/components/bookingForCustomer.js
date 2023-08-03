@@ -35,22 +35,12 @@ export default function BookingForCustomer() {
 
     // const [{ apiData  }] = useFetch();
     async function fetchData(userId) {
-        let query = { 'username': username }
+        
         let booking = await getBookingOfUser(userId);
-        let user = await getUser(query);
         let course = await getAllCourses();
         setData(booking.data);
-        let grade = await getAllGrades();
-
-        // console.log(grade.data[0]);
-        setUser(user.data);
         setCourse(course.data);
-        setGrade(grade.data);
-        setBooking(booking.data[0]); // Set the booking state after fetching data
-
-        // console.log(booking.data[0]);
-        // console.log(data[0].grade);
-        // console.log(grade)
+       
 
     }
     const handleDelete = async (event, id) => {
@@ -107,15 +97,17 @@ export default function BookingForCustomer() {
 
     }
 
-    function returnCourseName(booking, grade, course) {
+    function returnCourseName(id, course) {
+        // console.log(id)
+        // console.log(course)
         for (let i = 0; i < course.length; i++) {
-            if (returnCourseId(booking, grade) == course[i]._id) return course[i].courseName;
+            if (id == course[i]._id) return course[i].courseName;
         }
 
     }
-    function returnCoursePrice(booking, grade, course) {
+    function returnCoursePrice(id, course) {
         for (let i = 0; i < course.length; i++) {
-            if (returnCourseId(booking, grade) == course[i]._id) return course[i].price;
+            if (id == course[i]._id) return course[i].price;
         }
 
     }
@@ -138,7 +130,7 @@ export default function BookingForCustomer() {
     const handlePaymentSuccess = async (event, id) => {
         closeModal();
         setShowPaypalButton(false);
-        console.log(id);
+        // console.log(id);
         try {
             await setPaymentStatus(id);
 
@@ -225,12 +217,14 @@ export default function BookingForCustomer() {
                             </tr>
                         </thead>
                         <tbody className='divide-y divide-gray-200'>
-                            {data.map((booking, price) => (
+                            {data.map((booking,price) => (
                                 <tr key={booking._id}>
                                     {/* <td className='px-6 py-4'>{user.fullName}</td> */}
-                                    <td className='px-6 py-4'>{returnGrade(booking, grade)}</td>
+                                    <td className='px-6 py-4'>{booking.grade.gradeName}</td>
                                     {/* <td className='px-6 py-4'>{returnCourseName(booking, grade, course)}</td> */}
-                                    <td className='px-6 py-4'>{price = returnCoursePrice(booking, grade, course)}$</td>
+                                    <td className='px-6 py-4'>{course.map((e)=>{
+                                        if (e._id == booking.grade.course) return price = e.price;
+                                    })}$</td>
                                     <td className='px-6 py-4'>{showPayment(booking.payment)}</td>
                                     {/* <td className='px-6 py-4'>{convertDate(booking.createdAt)}</td> */}
 
@@ -249,7 +243,7 @@ export default function BookingForCustomer() {
                                         {booking.isAccepted !== 1 && (
                                             <button
                                                 className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-                                                onClick={(event) => handleDelete(event, booking._id,)}
+                                                onClick={(event) => handleDelete(event, booking._id)}
                                             >
                                                 Cancel
                                             </button>
@@ -312,11 +306,11 @@ export default function BookingForCustomer() {
                                                     <div className='mt-5 mb-5 ml-5'><h1 className='text-4xl'><b>Booking Detail</b></h1></div>
 
                                                     {/* <h2><b>Name:</b> {user.fullName}</h2> */}
-                                                    <p><b>Class:</b> {returnGrade(detail, grade)}</p>
-                                                    <p><b>Course:</b> {returnCourseName(detail, grade, course)}</p>
+                                                    <p><b>Class:</b> {detail.grade.gradeName}</p>
+                                                    <p><b>Course:</b> {returnCourseName(detail.grade.course,course)}</p>
                                                     <p><b>Payment:</b> {showPayment(detail.payment)}</p>
                                                     <p><b>Status:</b> {showStatus(detail.isAccepted)}</p>
-                                                    <p><b>Price</b> {returnCoursePrice(detail, grade, course)}$</p>
+                                                    <p><b>Price</b> {returnCoursePrice(detail.grade.course,course)}$</p>
                                                     <p><b>Created at:</b> {convertDate(detail.createdAt)}</p>
                                                 </div>)}
                                             <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">

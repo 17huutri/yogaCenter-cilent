@@ -20,7 +20,7 @@ export default function Detail() {
   const [{ apiData }] = useFetch();
   const navigate = useNavigate()
   const roleId = localStorage.getItem('roleId');
-  // const userId = apiData?._id
+  const userId = localStorage.getItem('id')
   const fetchData = async () => {
     let query = { 'active': 1, 'fullName': '' };
     const grades = await getAllGrades();
@@ -37,16 +37,17 @@ export default function Detail() {
     event.preventDefault()
     try {
       if (roleId == 1) {
-        let booking = { 'user': apiData?._id, 'grade': id }
+        let booking = { 'user': userId, 'grade': id }
         // const response = await createBooking(booking);
+        console.log(booking);
         let create = createBooking(booking);
-
+        
         toast.promise(create, {
           loading: 'Booking...',
           success: <b>Booking Successfully...!</b>,
-          error: <b>Something wrong !!!</b>
+          error: <b>You already have booked this class !!!</b>
         })
-      } else navigate('/login');
+      } else toast.error('Not permission, please login or try again!!!')
     } catch (error) {
       console.error(error)
     }

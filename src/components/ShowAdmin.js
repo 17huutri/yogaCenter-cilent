@@ -32,7 +32,7 @@ export default function ShowAdmins() {
 
         let query = { 'fullName': searchName || '', 'active': active || 0 }
         setCurrentPage(1);
-        console.log(query);
+        // console.log(query);
         const response = await getAdmins(query);
         setData(response.data);
         ;

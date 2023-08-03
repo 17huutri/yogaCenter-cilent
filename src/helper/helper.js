@@ -46,7 +46,7 @@ export async function getAllUser(query) {
     try {
 
         // console.log(filterData)
-        console.log(query)
+        // console.log(query)
         const { data } = await placeholderApi.get(`/api/getAll`, { params: query });
 
 
@@ -64,7 +64,7 @@ export async function getCustomers(query) {
     }
 }
 export async function getMentors(query) {
-    console.log(query)
+    // console.log(query)
     try {
         const { data } = await placeholderApi.get('/admin/getMentors', { params: query });
         return Promise.resolve({ data });
@@ -114,7 +114,7 @@ export async function getUser({ username }) {
 }
 export async function disableUser(id) {
     try {
-        console.log(id);
+        // console.log(id);
         return await placeholderApi.post(`/api/disableUser/${id}`);
 
     } catch (error) {

@@ -1,0 +1,49 @@
+.fc-scrollgrid-sync-inner {
+    border: 1px solid #353434;
+    border-collapse: collapse;
+}
+
+.attended {
+    color: green;
+    font-weight: bolder;
+}
+
+.absent {
+    color: red;
+    font-weight: bolder;
+
+}
+
+.not-yet {
+    color: orange;
+    font-weight: bolder;
+}
+
+.event-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    white-space: normal;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.event-class {
+    font-weight: bold;
+}
+
+.event-room {
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+
+
+.event-time {
+    color: #000000;
+    font-size: 0.9em;
+    font-weight: 700;
+}

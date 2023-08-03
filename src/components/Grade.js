@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
 import { getMentors } from '../helper/helper';
 import { getAllCourses } from '../helper/courseHelper';
-import { deleteGrade, createGrade, getAllGrades } from '../helper/gradeHelper'
+import { deleteGrade, createGrade, getAllGrades, getAllGradesForSchedule } from '../helper/gradeHelper'
 import { useNavigate, Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { getFile, uploadFile } from '../helper/upload';
@@ -25,12 +25,7 @@ export default function Grade() {
     const [showModal, setShowModal] = useState(false);
 
     const fetchData = async () => {
-        let query_1 = { 'active': 1, 'fullName': '' };
-        const courses = await getAllCourses();
-        const mentors = await getMentors(query_1)
-        const grades = await getAllGrades();
-        setMentor(mentors.data);
-        setCourses(courses.data)
+        const grades = await getAllGradesForSchedule();
         setGrades(grades.data)
     }
     let formData = new FormData();
@@ -87,6 +82,7 @@ export default function Grade() {
             });
         } catch (error) {
             console.error(error)
+            toast.error('Unique Class Name');
         }
     }
     const handleDelete = async (id) => {
@@ -147,7 +143,7 @@ export default function Grade() {
         setCurrentPage(pageNumber);
     };
     const handleShow = (user) => {
-        console.log(user);
+        // console.log(user);
         setDetail(user)
         setShowCard(true);
 
@@ -186,12 +182,7 @@ export default function Grade() {
                             <tr key={grade._id}>
 
 
-                                <td className='px-6 py-4'>{mentors.map((mentor) => {
-                                    if (grade.instructor == mentor._id)
-                                        return mentor.fullName
-
-                                    // data cua? booking
-                                })}</td>
+                                <td className='px-6 py-4'>{grade.instructor.fullName}</td>
                                 {/* <td className='px-6 py-4'>{grade.nOfStudent}</td>
                                 <td className='px-6 py-4'>{courses.map((course) => {
                                     if (grade.course == course._id)
@@ -373,33 +364,16 @@ export default function Grade() {
                                         </div>
                                         <div className="grid grid-cols-2 ml-20 mt-14">
                                             <div className="col-span-1 ml-10 mb-8">
-                                                <p><b>Mentor:</b> {mentors.map((mentor) => {
-                                                    if (detail.instructor == mentor._id)
-                                                        return mentor.fullName
+                                                <p><b>Mentor:</b> {detail.instructor.fullName}</p>
 
-                                                    // data cua? booking
-                                                })}</p>
-
-                                                <p><b>Course:</b> {courses.map((course) => {
-                                                    if (detail.course == course._id)
-                                                        return course.courseName
-                                                })}</p>
-                                                <p><b>Price:</b> {courses.map((course) => {
-                                                    if (detail.course == course._id)
-                                                        return course.price
-                                                })}$</p>
+                                                <p><b>Course:</b> {detail.course.courseName}</p>
+                                                <p><b>Price:</b> {detail.course.price}$</p>
                                                 <p><b>Class: </b> {detail.gradeName}</p>
                                                 <p><b>Number of student: </b>{detail.nOfStudent}</p>
                                                 <p><b>Room: </b> {detail.room}</p>
                                                 <p><b>Week Day: </b>{detail.weekDay}</p>
-                                                <p><b>Start:</b> {courses.map((course) => {
-                                                    if (detail.course == course._id)
-                                                        return convertDate(course.startTime)
-                                                })}</p>
-                                                <p><b>End:</b> {courses.map((course) => {
-                                                    if (detail.course == course._id)
-                                                        return convertDate(course.endTime)
-                                                })}</p>
+                                                <p><b>Start:</b> {convertDate(detail.course.startTime)}</p>
+                                                <p><b>End:</b> {convertDate(detail.course.endTime)}</p>
                                             </div>
                                             <div className="col-span-1 mb-8">
                                                 <p><b>Time: </b>{detail.startTimeGrade + " to " + detail.endTimeGrade}</p>

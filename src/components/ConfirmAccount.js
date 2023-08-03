@@ -24,8 +24,8 @@ export default function Recovery() {
 
     async function onSubmit(e) {
         e.preventDefault();
-        console.log(OTP)
-        console.log(e.target.code.value)
+        // console.log(OTP)
+        // console.log(e.target.code.value)
         // let OTP = e.target.code.value;
         try {
             let { status } = await verifyOTP({ username, code: OTP })
@@ -54,7 +54,7 @@ export default function Recovery() {
             {
                 loading: 'Sending...',
                 success: <b>OTP has been send to your email!</b>,
-                error: <b>Could not Send it!</b>,
+                error: <b>Could not send email!</b>,
             }
         );
 

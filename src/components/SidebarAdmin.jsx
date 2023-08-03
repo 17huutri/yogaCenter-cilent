@@ -114,7 +114,7 @@ const Sidebar = ({ children }) => {
     },
     {
       path: "/scheduleStudent",
-      name: "My Class",
+      name: "My Schedule",
       icon: <AiFillSchedule />,
       visible: isUser
     },
@@ -155,6 +155,11 @@ const Sidebar = ({ children }) => {
   function userLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("roleId");
+    localStorage.removeItem("isLogin");
+    localStorage.removeItem("fullName");
+    localStorage.removeItem("__paypal_storage__");
+    localStorage.removeItem("username");
+    localStorage.removeItem("id");
     navigate("/");
   }
 

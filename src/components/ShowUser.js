@@ -42,7 +42,7 @@ export default function ShowUsers() {
   const fetchData = async (searchName, active) => {
     let query = { 'fullName': searchName || '', 'active': active || 0 }
     setCurrentPage(1);
-    console.log(query);
+    // console.log(query);
     const response = await getAllUser(query);
     setData(response.data);
     const grade = await getAllGrades();
@@ -185,7 +185,7 @@ export default function ShowUsers() {
   const handleUpdate = async (event) => {
     event.preventDefault()
     try {
-      console.log(updatedUserData)
+      // console.log(updatedUserData)
       await updateUser_1(updatedUserData._id, updatedUserData);
       setShowModal(false);
       let dataPromise = fetchData();
@@ -332,8 +332,8 @@ export default function ShowUsers() {
                   </div> */}
 
                   <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Role Name :</label>
-                    <Select options={optionsRole} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} />
+                    <label className="block text-gray-700 ml-6 font-bold mb-2">Role Name :</label>
+                    <Select options={optionsRole} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} className="w-40 rounded ml-6"  />
                   </div>
 
 

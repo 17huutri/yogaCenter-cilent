@@ -144,12 +144,15 @@ export async function usernameVerify(values) {
 /** validate email */
 
 
-export function emailVerify(values) {
+export async function emailVerify(values) {
   const errors = {};
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const { status } = await authenticate(values.email);
   if (!values.email) {
     errors.email = "Please input your Email...!!";
-  } else if (!regex.test(values.email)) {
+  } else if (status === 500) {
+    errors.email = "Email already exists!";
+  }else if (!regex.test(values.email)) {
     errors.email = "Invalid Email";
   } 
 

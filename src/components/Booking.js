@@ -37,13 +37,8 @@ export default function Booking() {
     let token = localStorage.getItem('token');
     const fetchData = async (status) => {
         let query = { 'isAccepted': status}
-        let query_1 = {'active' : 1,'fullName' : ''};
-        const grades = await getAllGrades()
-        const customers = await getCustomers(query_1)
         const response = await getBookings(query);
         setData(response.data);
-        setCustomers(customers.data);
-        setGrade(grades.data)
         // console.log(data)
 
     }
@@ -119,7 +114,7 @@ export default function Booking() {
         // event.preventDefault()
         try {
             const response = await updateBooking(id); // Call your update function to update the user data
-            console.log(response)
+            // console.log(response)
             
             setShowModal(false);
             let dataPromise = fetchData(0);
@@ -135,18 +130,6 @@ export default function Booking() {
             toast.error('Something wrong, the class already been full or the user has been in class');
             console.log(error)
         }
-    }
-    function redirectAllBooking() {
-        navigate('/booking')
-    }
-    function redirectAcceptedBooking() {
-        navigate('/showUser')
-    }
-    function redirectRejectedBooking() {
-        navigate('/booking')
-    }
-    function redirectWaitingBooking() {
-        navigate('/booking')
     }
     const handleReject = async (event, id) => {
         event.currentTarget.disabled = true;
@@ -234,24 +217,8 @@ export default function Booking() {
                             <tr key={data._id}>
 
 
-                                <td className='px-6 py-4'>{grades.map((grade) => {
-                                    // {
-                                    //   if(data._id == user._id)  [user.username]
-                                    // }
-                                    if (data.grade == grade._id) // where dataid === courseid =
-                                        return grade.gradeName
-
-                                    // data cua? booking
-                                })}</td>
-                                <td className='px-6 py-4'>{customers.map((customer) => {
-                                    // {
-                                    //   if(data._id == user._id)  [user.username]
-                                    // }
-                                    if (data.user == customer._id)
-                                        return customer.fullName
-
-                                    // data cua? booking
-                                })}</td>
+                                <td className='px-6 py-4'>{data.grade.gradeName}</td>
+                                <td className='px-6 py-4'>{data.user.fullName}</td>
                                 <td className='px-6 py-4'>{showPayment(data.payment)}</td>
                                 <td className='px-6 py-4'>{convertDate(data.createdAt)}</td>
                                 <td className='px-6 py-4'>{showStatus(data.isAccepted)}</td>

@@ -64,3 +64,32 @@ export async function getGradeById(id){
         return Promise.reject({ error: 'Could not SHow' });
     }
 }
+export async function checkAttendance(query){
+    try {
+        let grade = query.grade
+        let user = query.user
+        let isAttended = query.isAttended
+        let date = new Date(query.date)
+        // date.setHours(0,0,0,0)
+        const {data}  = await placeholderApi.post(`/slot/createSlot?grade=${grade}&user=${user}&date=${date}&isAttended=${isAttended}`);
+        return Promise.resolve({ data });
+    } catch (error) {
+        return Promise.reject({ error: 'Could not SHow' });
+    }
+}
+export async function getSlotOfUser(id){
+    try {
+        const {data}  = await placeholderApi.get(`/slot/getSlot/${id}`);
+        return {data};
+    } catch (error) {
+        return Promise.reject({ error: 'Could not SHow' });
+    }
+}
+export async function getAllGradesForSchedule() {
+    try {      
+        const { data } = await placeholderApi.get('/grade/getAllGradesForSchedule');
+        return Promise.resolve({ data });
+    } catch (error) {
+        return Promise.reject({ error: 'Could not get' });
+    }
+}

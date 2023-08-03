@@ -5,6 +5,9 @@
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
     "@emotion/styled": "^11.11.0",
+    "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/react": "^6.1.8",
+    "@fullcalendar/resource-timegrid": "^6.1.8",
     "@mui/x-date-pickers": "^6.10.2",
     "@mui/x-date-pickers-pro": "^6.10.2",
     "@testing-library/jest-dom": "^5.16.5",

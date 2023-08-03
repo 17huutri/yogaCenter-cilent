@@ -81,6 +81,7 @@ export default function Login() {
                 className={styles.textbox}
                 type="text"
                 placeholder="Username"
+                required
               />
               <input
                 {...formik.getFieldProps("password")}
@@ -89,6 +90,7 @@ export default function Login() {
                 className={styles.textbox}
                 type="password"
                 placeholder="Password"
+                required
               />
               <button className={styles.btn} type="submit">
                 Login

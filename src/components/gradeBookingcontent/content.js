@@ -46,7 +46,7 @@ export default function Grade() {
     };
     return (
 
-        <div>
+        <div className="" style={{ marginTop: '8.9rem' }}>
             <div className="grid grid-cols-4">
                 <div className="bg-gray-200"><img className="w-auto h-auto" src="./assets/poster1.png" alt="yoga" /></div>
                 <div className="bg-gray-200"><img className="w-auto h-auto" src="./assets/poster2.png" alt="yoga" /></div>
@@ -55,7 +55,7 @@ export default function Grade() {
             </div>
             <div class="ml-20 max-w-15xl ">
                 <div className="space-y-2 mt-15 mb-18">
-                    <h2 className="text-center text-5xl font-serif">Classes</h2>
+                    <h2 className="text-center text-5xl mt-8 font-serif">Classes</h2>
                     <nav class="text-xl flex justify-center">
                         <ol class="list-none p-10 inline-flex">
                             <li class="flex items-center ms-4 " >
@@ -89,7 +89,7 @@ export default function Grade() {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" style={{ display: 'flex', flexWrap: 'wrap' }}>                    {(searchResults.length > 0 ? searchResults : grades).map((grade) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" style={{ display: 'flex', flexWrap: 'wrap' }}>{(searchResults.length > 0 ? searchResults : grades).map((grade) => grade.nOfStudent < 20 && (
                     <div className="flex-row bg-gray-100 box-content h-auto w-auto p-4"
                         key={grade._id}>
                         <div className="aspect-h-1 aspect-w-1 w-50 overflow-hidden rounded-sm bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">

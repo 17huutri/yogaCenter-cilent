@@ -33,7 +33,7 @@ export default function ShowMentors() {
     const fetchData = async (searchName, active) => {
         let query = { 'fullName': searchName || '', 'active': active || 0 }
         setCurrentPage(1);
-        console.log(query);
+        // console.log(query);
         const grades = await getAllGrades()
         const response = await getMentors(query);
         setData(response.data);
@@ -98,8 +98,8 @@ export default function ShowMentors() {
         return { value: role.roleId, label: role.roleName };
     })
     const handleSelectRole = (event, meta) => {
-        console.log(meta.name);
-        console.log(event.value);
+        // console.log(meta.name);
+        // console.log(event.value);
         setUpdatedUserData({ ...updatedUserData, [meta.name]: event.value });
     }
     const handleUpdate = async (event) => {
@@ -239,31 +239,33 @@ export default function ShowMentors() {
                                 <td className="px-6 py-4">
                                     {showActive(user.isActive)}  </td>
                                 <td className='px-6 py-4'>
-                                    <>
+                                    {roleId == 4 && (
                                         <button
                                             className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                                             onClick={() => handleEdit(user)}
                                         >
                                             Edit
-                                        </button>
-                                        {user.isActive == 1 && roleId == 4 && (
-                                            <button
-                                                className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-                                                onClick={() => handleUnactive(user._id)}
-                                            >
-                                                Unactive
-                                            </button>
-                                        )}
-                                        {user.isActive == 0 && roleId == 4 && (
-                                            <button
-                                                className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
-                                                onClick={() => handleActive(user._id)}
-                                            >
-                                                Active
-                                            </button>
-                                        )}
+                                        </button>)}
 
-                                    </>
+
+                                    {user.isActive == 1 && roleId == 4 && (
+                                        <button
+                                            className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+                                            onClick={() => handleUnactive(user._id)}
+                                        >
+                                            Unactive
+                                        </button>
+                                    )}
+                                    {user.isActive == 0 && roleId == 4 && (
+                                        <button
+                                            className="mr-2 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+                                            onClick={() => handleActive(user._id)}
+                                        >
+                                            Active
+                                        </button>
+                                    )}
+
+
                                 </td>
                             </tr>
                         ))}
@@ -303,13 +305,13 @@ export default function ShowMentors() {
                   </div> */}
 
                                         <div className="mb-4">
-                                            <label className="block text-gray-700 font-bold mb-2">Role Name :</label>
+                                            <label className="block text-gray-700 ml-6 font-bold mb-2">Role Name :</label>
                                             {roleId == 4 && (
-                                                <Select options={optionsRoleForAdmin} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} />
+                                                <Select options={optionsRoleForAdmin} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)}  className="w-40 rounded ml-6" />
                                             )
                                             }
                                             {roleId == 3 && (
-                                                <Select options={optionsRoleForStaff} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)} />
+                                                <Select options={optionsRoleForStaff} name="roleId" onChange={(event, meta) => handleSelectRole(event, meta)}className="w-40 rounded ml-6"  />
                                             )
                                             }
                                         </div>

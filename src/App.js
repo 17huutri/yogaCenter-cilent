@@ -40,6 +40,7 @@ import ScheduleStudent from './components/ScheduleForStudent.js'
 import ScheduleMentor from './components/ScheduleForMentor.js'
 import Contact from "./components/contact/contactEmail.js";
 import ContactEmail from "./components/contact/contactEmail.js";
+import Attendance from './components/Attendance.js'
 // import Testing from "./components/Testing.js";
 const router = createBrowserRouter([
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         element: <ContactEmail></ContactEmail>
     },
     {
+        path: '/attendance/:gradeId',
+        element: <Sidebar><Attendance></Attendance></Sidebar>
+    },
+    {
         path: '/scheduleStudent',
         element: <Sidebar><ScheduleStudent></ScheduleStudent></Sidebar>
     },
@@ -69,7 +74,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/showStudent/:gradeId',
-        element: <ShowStudent></ShowStudent>
+        element: <Sidebar><ShowStudent></ShowStudent></Sidebar>
     },
     {
         path: '/login',
